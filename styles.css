@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "mrs eaves xl";
+    src: url('/fonts/mrseavesxlsernarb-020415006EmigreWebOnly.woff2') format('woff2'),
+         url('/fonts/mrseavesxlsernarb-020415006EmigreWebOnly.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body, div {
+  margin: 0;
+  padding: 0;
+}
+
+.site-body {
+  font-family: "mrs eaves xl";
+  font-weight: normal;
+  background: rgb(0,48,66);
+  font-size: 6vmin;
+  color: rgb(0,101,128);
+}
+
+.text-block {
+  margin: 1em auto;
+  width: 80%;
+  max-width: 900px;
+}
+
+.text-link {
+  text-decoration: none;
+  color: rgb(0, 194, 243);
+}
+
+.small-text { font-size: .75em; }
