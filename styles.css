@@ -31,3 +31,5 @@ html, body, div {
 }
 
 .small-text { font-size: .75em; }
+
+.inline-block { display: inline-block; }
