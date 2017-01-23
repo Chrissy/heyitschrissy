@@ -11,6 +11,12 @@ html, body, div {
   padding: 0;
 }
 
+.viewport-locked {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .site-body {
   font-family: "mrs eaves xl";
   font-weight: normal;
