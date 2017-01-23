@@ -14,7 +14,7 @@ html, body, div {
 .site-body {
   font-family: "mrs eaves xl";
   font-weight: normal;
-  font-size: 4vw;
+  font-size: 3.5vw;
   color: rgb(0,101,128);
   width: 100vw;
   overflow-x: hidden;
@@ -34,6 +34,8 @@ html, body, div {
   max-width: 900px;
   margin: 0 auto;
 }
+
+.content-container.wide { max-width: 1000px; }
 
 .text-link {
   text-decoration: none;
