@@ -58,7 +58,10 @@ html, body, div {
   background: rgb(230, 230, 230);
 }
 
-.sliding-site-section.showing { transform: translateX(0); }
+.sliding-site-section.showing {
+  display: block;
+  transform: translateX(0);
+}
 
 .toggle-button {
   position: fixed;
@@ -71,7 +74,9 @@ html, body, div {
 
 .big-image {
   width: 100%;
+  max-height: 800px;
   margin-top: 4rem;
+  object-fit: contain;
 }
 
 .small-text { font-size: .75em; }
