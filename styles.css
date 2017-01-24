@@ -74,14 +74,22 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 .toggle-button {
   position: absolute;
   top: 1rem;
-  right: 1rem;
   cursor: pointer;
-}
-
-.images-icon {
   height: .75em;
   width: 1.25em;
   fill: rgb(0, 194, 243);
+  opacity: 0;
+  transform: translateY(1em);
+  transition: .5s all cubic-bezier(1, 0, 0, 1) .3s;
+}
+
+.toggle-button.images { right: 1rem; }
+
+.toggle-button.bio { left: 1rem; }
+
+.toggle-button.showing {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .big-image {

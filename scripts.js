@@ -1,15 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
-  var leftTrigger = document.getElementById('portfolio-toggle-button');
+  var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
 
-  leftTrigger.addEventListener('click', function(){
-    document.body.classList.toggle('showing-second-panel');
+  toggleButtons.forEach(function(toggleButton){
+    toggleButton.addEventListener('click', function(){
+      document.body.classList.toggle('showing-second-panel');
 
-    slidingSections.forEach(element => element.classList.toggle('showing'));
+      slidingSections.forEach(element => element.classList.toggle('showing'));
+      toggleButtons.forEach(element => element.classList.toggle('showing'));
 
-    document.body.classList.add('animating');
-    setTimeout(() => document.body.classList.remove('animating'), 500);
-  });
+      document.body.classList.add('animating');
+      setTimeout(() => document.body.classList.remove('animating'), 500);
+    });
+  })
 });
 
 window.onbeforeunload = function(){
