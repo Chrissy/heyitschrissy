@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function() {
   leftTrigger.addEventListener('click', function(){
     slidingSections.forEach(function(element) {
       element.classList.toggle('showing');
-      document.body.classList.add('viewport-locked')
-      setTimeout(() => document.body.classList.remove('viewport-locked'), 500);
+      document.body.classList.add('animating')
+      setTimeout(() => document.body.classList.remove('animating'), 500);
     });
   });
 });

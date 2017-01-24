@@ -11,7 +11,7 @@ html, body, div {
   padding: 0;
 }
 
-.viewport-locked {
+body.animating {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -24,15 +24,6 @@ html, body, div {
   color: rgb(0,101,128);
   width: 100vw;
   overflow-x: hidden;
-}
-
-.sliding-site-section {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0 auto;
-  width: 100%;
-  transition: .5s transform cubic-bezier(1, 0, 0, 1);
 }
 
 .content-container {
@@ -48,6 +39,15 @@ html, body, div {
   color: rgb(0, 194, 243);
 }
 
+.sliding-site-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0 auto;
+  width: 100%;
+  transition: .5s transform cubic-bezier(1, 0, 0, 1);
+}
+
 .sliding-site-section.first {
   transform: translateX(-100vw);
   background: rgb(0,48,66);
@@ -58,8 +58,12 @@ html, body, div {
   background: rgb(230, 230, 230);
 }
 
+body:not(.animating) .sliding-site-section:not(.showing) {
+  overflow: hidden;
+  height: 0;
+}
+
 .sliding-site-section.showing {
-  display: block;
   transform: translateX(0);
 }
 
