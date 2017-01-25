@@ -1,6 +1,9 @@
 {
   "name": "chrissy_makes_a_website",
   "version": "1000.0.0",
+  "engines": {
+    "node": "6.9.1"
+  },
   "scripts": {
     "start": "watchify -t [ babelify ] static/scripts.js -o static/scripts.babel.js & node server.js"
   },
