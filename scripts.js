@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
       document.body.classList.add('animating');
       setTimeout(() => document.body.classList.remove('animating'), 500);
     });
-  })
+  });
 });
 
 window.onbeforeunload = function(){
