@@ -5,7 +5,8 @@
     "node": "6.9.4"
   },
   "scripts": {
-    "start": "watchify -t [ babelify ] static/scripts.js -o static/scripts.babel.js & node server.js"
+    "watch": "watchify -t [ babelify ] static/scripts.js -o static/scripts.babel.js & node server.js",
+    "start": "node server.js"
   },
   "license": "ISC",
   "devDependencies": {
