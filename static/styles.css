@@ -51,6 +51,8 @@ body.animating {
 
 .content-container.wide { max-width: 1000px; }
 
+.text-block.first { margin-top: .2em; }
+
 .text-link {
   text-decoration: none;
   color: rgb(0, 194, 243);
@@ -88,10 +90,12 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 
 .toggle-button {
   position: absolute;
-  top: 1rem;
+  top: 1.25rem;
   cursor: pointer;
   height: .75em;
   width: 1.25em;
+  min-width: 3rem;
+  min-height: 1.5rem;
   fill: rgb(0, 194, 243);
   opacity: 0;
   transform: translateY(1em);
