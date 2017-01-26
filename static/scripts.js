@@ -1,11 +1,20 @@
 import Bowser from 'bowser';
+import Reqwest from 'reqwest';
+
+const requestImageSet = (params) => {
+  const el = document.getElementById(params.elementId);
+  Reqwest(el.getAttribute('src'), response => el.innerHTML = response);
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
+  var preloadImages = document.querySelectorAll('img.preload');
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  preloadImages.forEach((img) => (new Image()).src = img.getAttribute('src'));
 
   [...toggleButtons].forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){
@@ -15,7 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
       [...toggleButtons].forEach(element => element.classList.toggle('showing'));
 
       document.body.classList.add('animating');
-      setTimeout(() => document.body.classList.remove('animating'), 500);
+
+      setTimeout(() => {
+        document.body.classList.remove('animating');
+        requestImageSet({elementId: "image-set-1"});
+      }, 500);
     });
   });
 });

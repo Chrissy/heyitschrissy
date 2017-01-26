@@ -5,7 +5,7 @@
     "node": "6.9.4"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "watchify -t [ babelify ] static/scripts.js -o static/scripts.babel.js & node server.js"
   },
   "license": "ISC",
   "dependencies": {
@@ -16,6 +16,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "watchify": "^3.7.0",
-    "bowser": "^1.6.0"
+    "bowser": "^1.6.0",
+    "reqwest": "^2.0.5"
   }
 }
