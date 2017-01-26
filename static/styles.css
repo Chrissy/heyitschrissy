@@ -120,6 +120,13 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   object-fit: contain;
 }
 
+.image-batch {
+  transition: .5s opacity;
+  opacity: 0;
+}
+
+.image-batch.loaded { opacity: 1; }
+
 .small-text { font-size: .75em; }
 
 .inline-block { display: inline-block; }

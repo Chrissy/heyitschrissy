@@ -3,7 +3,10 @@ import Reqwest from 'reqwest';
 
 const requestImageSet = (params) => {
   const el = document.getElementById(params.elementId);
-  Reqwest(el.getAttribute('src'), response => el.innerHTML = response);
+  Reqwest(el.getAttribute('src'), (response) => {
+    el.innerHTML = response;
+    el.classList.add('loaded');
+  });
 
   const potentialNextSet = el.getAttribute('next-set');
   if (potentialNextSet) requestImageSet({elementId: potentialNextSet});

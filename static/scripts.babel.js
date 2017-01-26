@@ -1916,7 +1916,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var requestImageSet = function requestImageSet(params) {
   var el = document.getElementById(params.elementId);
   (0, _reqwest2.default)(el.getAttribute('src'), function (response) {
-    return el.innerHTML = response;
+    el.innerHTML = response;
+    el.classList.add('loaded');
   });
 
   var potentialNextSet = el.getAttribute('next-set');
