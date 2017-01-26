@@ -1918,6 +1918,9 @@ var requestImageSet = function requestImageSet(params) {
   (0, _reqwest2.default)(el.getAttribute('src'), function (response) {
     return el.innerHTML = response;
   });
+
+  var potentialNextSet = el.getAttribute('next-set');
+  if (potentialNextSet) requestImageSet({ elementId: potentialNextSet });
 };
 
 document.addEventListener("DOMContentLoaded", function () {

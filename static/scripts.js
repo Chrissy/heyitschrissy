@@ -4,6 +4,9 @@ import Reqwest from 'reqwest';
 const requestImageSet = (params) => {
   const el = document.getElementById(params.elementId);
   Reqwest(el.getAttribute('src'), response => el.innerHTML = response);
+
+  const potentialNextSet = el.getAttribute('next-set');
+  if (potentialNextSet) requestImageSet({elementId: potentialNextSet});
 }
 
 document.addEventListener("DOMContentLoaded", function() {
