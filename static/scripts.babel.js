@@ -1928,10 +1928,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
 
-  preloadImages.forEach(function (img) {
-    return new Image().src = img.getAttribute('src');
-  });
-
   [].concat((0, _toConsumableArray3.default)(toggleButtons)).forEach(function (toggleButton) {
     toggleButton.addEventListener('click', function () {
       document.body.classList.toggle('showing-second-panel');

@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
 
-  preloadImages.forEach((img) => (new Image()).src = img.getAttribute('src'));
-
   [...toggleButtons].forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){
       document.body.classList.toggle('showing-second-panel');
