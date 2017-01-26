@@ -106,6 +106,8 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 
 .toggle-button.bio { left: 1rem; }
 
+.no-js .toggle-button { display: none; }
+
 .toggle-button.showing {
   transform: translateY(0);
   opacity: 1;

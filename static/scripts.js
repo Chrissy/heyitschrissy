@@ -1,4 +1,9 @@
+import Bowser from 'bowser';
+
 document.addEventListener("DOMContentLoaded", function() {
+  if (Bowser.msie) return;
+  document.body.classList.remove("no-js");
+
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
 
