@@ -11,10 +11,6 @@ html, body, div {
   padding: 0;
 }
 
-body:not(.animating) { background: rgb(0,48,66); }
-
-body:not(.animating).showing-second-panel { background: rgb(230, 230, 230); }
-
 body.animating {
   width: 100vw;
   height: 100vh;
@@ -25,7 +21,7 @@ body.animating {
   font-family: "mrs eaves xl";
   font-weight: normal;
   font-size: 4.4vw;
-  color: rgb(0,116,147);
+  color: rgb(12, 75, 121);
   width: 100vw;
   overflow-x: hidden;
 }
@@ -71,13 +67,17 @@ body.animating {
 
 .sliding-site-section.first {
   transform: translateX(-100vw);
-  background: rgb(0,48,66);
+  background: rgb(227, 247, 255);
 }
 
 .sliding-site-section.second {
   transform: translateX(100vw);
-  background: rgb(230, 230, 230);
+  background: rgb(240, 240, 240);
 }
+
+body:not(.animating) { background: rgb(227, 247, 255); }
+
+body:not(.animating).showing-second-panel { background: rgb(240, 240, 240); }
 
 body:not(.animating) .sliding-site-section:not(.showing) {
   overflow: hidden;
@@ -102,9 +102,21 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   transition: .5s all cubic-bezier(1, 0, 0, 1) .3s;
 }
 
+.toggle-button-text {
+  font-size: .9rem;
+  color: rgb(0, 194, 243);
+  text-transform: uppercase;
+  line-height: 0;
+  text-align: center;
+}
+
 .toggle-button.images { right: 1rem; }
 
 .toggle-button.bio { left: 1rem; }
+
+.toggle-button.images .toggle-button-text { margin-right: 1.1em; }
+
+.toggle-button.bio .toggle-button-text { margin-left: 1.1em; }
 
 .no-js .toggle-button { display: none; }
 
