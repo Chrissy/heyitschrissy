@@ -47,8 +47,6 @@ body.animating {
 
 .content-container.wide { max-width: 1000px; }
 
-.text-block.first { margin-top: .2em; }
-
 .text-link {
   text-decoration: none;
   color: rgb(0, 194, 243);
