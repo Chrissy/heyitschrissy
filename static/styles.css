@@ -135,11 +135,9 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 }
 
 .caption {
-  color: #ccc;
-  width: 60%;
+  color: #b7b7b7;
   margin-top: .5em;
-  text-align: right;
-  align-self: flex-end;
+  text-align: center;
   font-size: .8rem;
   min-width: 300px;
 }
