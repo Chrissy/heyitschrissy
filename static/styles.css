@@ -141,6 +141,7 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   text-align: right;
   align-self: flex-end;
   font-size: .8rem;
+  min-width: 300px;
 }
 
 .caption.center {
