@@ -41,6 +41,11 @@ body.animating {
   padding-top: .5em;
 }
 
+.content-container, .image-batch {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 600px) {
   .content-container { width: 90%; }
 }
@@ -129,6 +134,20 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   object-fit: contain;
 }
 
+.caption {
+  color: #ccc;
+  width: 60%;
+  margin-top: .5em;
+  text-align: right;
+  align-self: flex-end;
+  font-size: .8rem;
+}
+
+.caption.center {
+  width: 100%;
+  text-align: center;
+}
+
 .process-images {
   display: flex;
   align-items: center;
@@ -158,8 +177,18 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   opacity: 0;
 }
 
-.image-batch.loaded { opacity: 1; }
+.image-batch.loaded {
+  opacity: 1;
+}
 
-.small-text { font-size: .75em; }
+.small-text {
+  font-size: .75em;
+}
 
-.inline-block { display: inline-block; }
+.inline-block {
+  display: inline-block;
+}
+
+.margin-top {
+  margin-top: 1em;
+}
