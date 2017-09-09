@@ -129,6 +129,30 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   object-fit: contain;
 }
 
+.process-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 2em;
+}
+
+.process-image {
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .process-images {
+    width: 120%;
+    margin-left: -10%;
+    flex-direction: row;
+  }
+
+  .process-image {
+    width: 50%;
+  }
+}
+
 .image-batch {
   transition: .5s opacity;
   opacity: 0;
