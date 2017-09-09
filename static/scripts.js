@@ -1,8 +1,8 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
 
-const requestImageSet = (params) => {
-  const el = document.getElementById(params.elementId);
+const requestImageSet = ({elementId}) => {
+  const el = document.getElementById(elementId);
   Reqwest(el.getAttribute('src'), (response) => {
     el.innerHTML = response;
     el.classList.add('loaded');
@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
-  var preloadImages = document.querySelectorAll('img.preload');
-  var toggleButtons = document.querySelectorAll('.toggle-button');
-  var slidingSections = document.querySelectorAll('.sliding-site-section');
+  const preloadImages = document.querySelectorAll('img.preload');
+  const toggleButtons = document.querySelectorAll('.toggle-button');
+  const slidingSections = document.querySelectorAll('.sliding-site-section');
 
   [...toggleButtons].forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){
