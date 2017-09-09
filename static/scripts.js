@@ -1,5 +1,43 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
+import GetPixels from 'get-pixels';
+import {WebGLRenderer, Scene, PerspectiveCamera, ImageLoader, MeshBasicMaterial, Mesh, PlaneGeometry} from 'three';
+
+const loader = new ImageLoader();
+
+const initializeCanvas = ({data, width, height}) => {
+  const scene = new Scene({autoUpdate: false});
+  const canvas = document.getElementById('canvas');
+  const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
+  const oneDimensionalData = data.filter((d,i) => i % 4 == 0);
+
+  const camera = new PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
+  console.log(width, height)
+  const geometry = new PlaneGeometry(223, 223, width - 1, height - 1);
+  camera.position.y = 0;
+  camera.position.x = 0;
+  camera.position.z = 300;
+
+  const renderer = new WebGLRenderer({canvas});
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+
+  const material = new MeshBasicMaterial({color: 0xdddddd, wireframe: true});
+  const plane = new Mesh(geometry, material);
+
+  plane.geometry.vertices.map((v,i) => {
+    return Object.assign(v, { z: (oneDimensionalData[i] == 255) ? 0 : 50 })
+  });
+
+  plane.rotation.x = 5.7;
+
+  scene.add(plane);
+  renderer.render(scene, camera);
+}
+
+const pixels = GetPixels("fonts/h.png", (err, data) => {
+  initializeCanvas({data: data.data, width: data.shape[0], height: data.shape[1]});
+})
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);

@@ -6,6 +6,14 @@
     font-style: normal;
 }
 
+.canvas {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: #ccc;
+}
+
 html, body, div {
   margin: 0;
   padding: 0;
