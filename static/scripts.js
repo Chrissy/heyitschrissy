@@ -13,7 +13,7 @@ const initializeCanvas = ({data, width, height, image, elevations}) => {
   const geometry = new PlaneGeometry(223, 223, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
-  camera.position.z = 300;
+  camera.position.z = 400;
 
   const renderer = new WebGLRenderer({canvas, alpha: true});
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
@@ -23,17 +23,17 @@ const initializeCanvas = ({data, width, height, image, elevations}) => {
   const plane = new Mesh(geometry, material);
 
   plane.geometry.vertices.map((v,i) => {
-    return Object.assign(v, { z: (oneDimensionalData[i] == 255) ? 0 : (elevations[i] - 2500) / 70 })
+    return Object.assign(v, { z: (elevations[i] == null || oneDimensionalData[i] == 255) ? 0 : (elevations[i] - 2000) / 70 })
   });
 
-  plane.rotation.x = 5.7;
+  plane.rotation.x = 5.3;
 
   var lights = [];
-	lights[0] = new PointLight( 0xffffff, 0.75, 0 );
-	lights[1] = new PointLight( 0xffffff, 0.75, 0 );
+	lights[0] = new PointLight( 0xffffff, 1, 0 );
+	lights[1] = new PointLight( 0xffffff, 1, 0 );
 
-	lights[0].position.set( 50, 10, 15 );
-	lights[1].position.set( -50, -20, 15 );
+	lights[0].position.set( 50, 10, 35 );
+	lights[1].position.set( -50, -20, 35 );
 
   // var pointLightHelper = new PointLightHelper(lights[0],10);
   // var pointLightHelper2 = new PointLightHelper(lights[1],10);
