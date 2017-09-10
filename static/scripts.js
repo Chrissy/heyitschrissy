@@ -3,11 +3,13 @@ import Reqwest from 'reqwest';
 import GetPixels from 'get-pixels';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, AmbientLight, PointLightHelper, TextureLoader} from 'three';
 
-const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, elevations}) => {
+const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, elevations, elevations2}) => {
   const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
   const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
   const oneDimensionalData = data.filter((d,i) => i % 4 == 0);
+
+  console.log(width)
 
   const camera = new PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
@@ -24,27 +26,23 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
 
 
   plane.geometry.vertices.map((v,i) => {
-    const add = (oneDimensionalData[i] == 0) ? 10000 : 0;
-    return Object.assign(v, { z: (Math.max((elevations[i]), 0) + add) / 200 })
+    const add = (oneDimensionalData[i] == 0) ? elevations2[i] : elevations[i];
+    return Object.assign(v, { z: add / 200 })
   });
 
-  plane.rotation.x = 5.5;
+  plane.rotation.x = 5.6;
+  plane.rotation.z = 1.75;
 
-  // var lights = [];
-	// lights[0] = new PointLight( 0xffffff, 1, 0 );
-	// lights[1] = new PointLight( 0xffffff, 1, 0 );
-  //
-	// lights[0].position.set( 50, 10, 155 );
-	// lights[1].position.set( -50, -20, 155 );
+  var lights = [];
+	lights[0] = new PointLight( 0xffffff, 0.75, 0 );
+	lights[1] = new PointLight( 0xffffff, 0.75, 0 );
 
-  // var pointLightHelper = new PointLightHelper(lights[0],10);
-  // var pointLightHelper2 = new PointLightHelper(lights[1],10);
-  // scene.add(pointLightHelper);
-  // scene.add(pointLightHelper2);
+	lights[0].position.set( 50, 10, 55 );
+	lights[1].position.set( -50, -20, 55 );
 
-	// scene.add( lights[ 0 ] );
-	// scene.add( lights[ 1 ] );
-  const light = new AmbientLight(0xffffff);
+	scene.add( lights[ 0 ] );
+	scene.add( lights[ 1 ] );
+  const light = new AmbientLight(0xffffff, 0.33);
   scene.add(light)
   scene.add(plane);
   renderer.render(scene, camera);
@@ -54,8 +52,13 @@ const loader = new TextureLoader();
 
 GetPixels("fonts/h.png", (err, data) => {
   Reqwest("/data/whitney.json", (response) => {
-    loader.load("/data/whitney.jpg", (image) => {
-      initializeCanvas({data: data.data, width: response[0].length, height: response.length, image, imageWidth: data.shape[0], imageHeight: data.shape[1], elevations: response.reduce((a,r) => [...a, ...r])});
+    Reqwest("/data/zion.json", (response2) => {
+      loader.load("/data/whitney-h.png", (image) => {
+        const w = Math.min(response[0].length, response2[0].length);
+        const sliced1 = response.map(p => p.slice(0, w)).slice(0, w);
+        const sliced2 = response2.map(p => p.slice(0, w)).slice(0, w);
+        initializeCanvas({data: data.data, width: w, height: w, image, imageWidth: data.shape[0], imageHeight: data.shape[1], elevations: sliced1.reduce((a,r) => [...a, ...r]), elevations2: sliced2.reduce((a,r) => [...a, ...r])});
+      });
     });
   });
 })
