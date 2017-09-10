@@ -23,7 +23,7 @@ const initializeCanvas = ({data, width, height, elevations}) => {
   const plane = new Mesh(geometry, material);
 
   plane.geometry.vertices.map((v,i) => {
-    return Object.assign(v, { z: (oneDimensionalData[i] == 255) ? 0 : elevations[i] / 100 })
+    return Object.assign(v, { z: (oneDimensionalData[i] == 255) ? 0 : (elevations[i] - 2500) / 70 })
   });
 
   plane.rotation.x = 5.7;
