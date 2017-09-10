@@ -54032,7 +54032,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   camera.position.x = 0;
   camera.position.z = 300;
 
-  var renderer = new _three.WebGLRenderer({ canvas: canvas });
+  var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 

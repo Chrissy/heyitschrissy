@@ -15,7 +15,7 @@ const initializeCanvas = ({data, width, height, image, elevations}) => {
   camera.position.x = 0;
   camera.position.z = 300;
 
-  const renderer = new WebGLRenderer({canvas});
+  const renderer = new WebGLRenderer({canvas, alpha: true});
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
