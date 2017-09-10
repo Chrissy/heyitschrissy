@@ -54017,6 +54017,8 @@ var initializeCanvas = function initializeCanvas(_ref) {
       width = _ref.width,
       height = _ref.height,
       image = _ref.image,
+      imageWidth = _ref.imageWidth,
+      imageHeight = _ref.imageHeight,
       elevations = _ref.elevations;
 
   var scene = new _three.Scene({ autoUpdate: false });
@@ -54027,7 +54029,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   });
 
   var camera = new _three.PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
-  var geometry = new _three.PlaneGeometry(223, 223, width - 1, height - 1);
+  var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
   camera.position.z = 400;
@@ -54040,26 +54042,28 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
-    return (0, _assign2.default)(v, { z: oneDimensionalData[i] == 255 ? 0 : Math.max(elevations[i] - 2200, 0) / 70 });
+    var add = oneDimensionalData[i] == 0 ? 10000 : 0;
+    return (0, _assign2.default)(v, { z: (Math.max(elevations[i], 0) + add) / 200 });
   });
 
-  plane.rotation.x = 5.3;
+  plane.rotation.x = 5.5;
 
-  var lights = [];
-  lights[0] = new _three.PointLight(0xffffff, 1, 0);
-  lights[1] = new _three.PointLight(0xffffff, 1, 0);
-
-  lights[0].position.set(50, 10, 35);
-  lights[1].position.set(-50, -20, 35);
+  // var lights = [];
+  // lights[0] = new PointLight( 0xffffff, 1, 0 );
+  // lights[1] = new PointLight( 0xffffff, 1, 0 );
+  //
+  // lights[0].position.set( 50, 10, 155 );
+  // lights[1].position.set( -50, -20, 155 );
 
   // var pointLightHelper = new PointLightHelper(lights[0],10);
   // var pointLightHelper2 = new PointLightHelper(lights[1],10);
   // scene.add(pointLightHelper);
   // scene.add(pointLightHelper2);
 
-  scene.add(lights[0]);
-  scene.add(lights[1]);
-
+  // scene.add( lights[ 0 ] );
+  // scene.add( lights[ 1 ] );
+  var light = new _three.AmbientLight(0xffffff);
+  scene.add(light);
   scene.add(plane);
   renderer.render(scene, camera);
 };
@@ -54068,8 +54072,8 @@ var loader = new _three.TextureLoader();
 
 (0, _getPixels2.default)("fonts/h.png", function (err, data) {
   (0, _reqwest2.default)("/data/whitney.json", function (response) {
-    loader.load("/fonts/H-transparent.png", function (image) {
-      initializeCanvas({ data: data.data, width: data.shape[0], height: data.shape[1], image: image, elevations: response.reduce(function (a, r) {
+    loader.load("/data/whitney.jpg", function (image) {
+      initializeCanvas({ data: data.data, width: response[0].length, height: response.length, image: image, imageWidth: data.shape[0], imageHeight: data.shape[1], elevations: response.reduce(function (a, r) {
           return [].concat((0, _toConsumableArray3.default)(a), (0, _toConsumableArray3.default)(r));
         }) });
     });

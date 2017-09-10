@@ -1,16 +1,16 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
 import GetPixels from 'get-pixels';
-import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, PointLightHelper, TextureLoader} from 'three';
+import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, AmbientLight, PointLightHelper, TextureLoader} from 'three';
 
-const initializeCanvas = ({data, width, height, image, elevations}) => {
+const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, elevations}) => {
   const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
   const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
   const oneDimensionalData = data.filter((d,i) => i % 4 == 0);
 
   const camera = new PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
-  const geometry = new PlaneGeometry(223, 223, width - 1, height - 1);
+  const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
   camera.position.z = 400;
@@ -22,27 +22,30 @@ const initializeCanvas = ({data, width, height, image, elevations}) => {
   const material = new MeshPhongMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
+
   plane.geometry.vertices.map((v,i) => {
-    return Object.assign(v, { z: (oneDimensionalData[i] == 255) ? 0 : Math.max((elevations[i] - 2200), 0) / 70 })
+    const add = (oneDimensionalData[i] == 0) ? 10000 : 0;
+    return Object.assign(v, { z: (Math.max((elevations[i]), 0) + add) / 200 })
   });
 
-  plane.rotation.x = 5.3;
+  plane.rotation.x = 5.5;
 
-  var lights = [];
-	lights[0] = new PointLight( 0xffffff, 1, 0 );
-	lights[1] = new PointLight( 0xffffff, 1, 0 );
-
-	lights[0].position.set( 50, 10, 35 );
-	lights[1].position.set( -50, -20, 35 );
+  // var lights = [];
+	// lights[0] = new PointLight( 0xffffff, 1, 0 );
+	// lights[1] = new PointLight( 0xffffff, 1, 0 );
+  //
+	// lights[0].position.set( 50, 10, 155 );
+	// lights[1].position.set( -50, -20, 155 );
 
   // var pointLightHelper = new PointLightHelper(lights[0],10);
   // var pointLightHelper2 = new PointLightHelper(lights[1],10);
   // scene.add(pointLightHelper);
   // scene.add(pointLightHelper2);
 
-	scene.add( lights[ 0 ] );
-	scene.add( lights[ 1 ] );
-
+	// scene.add( lights[ 0 ] );
+	// scene.add( lights[ 1 ] );
+  const light = new AmbientLight(0xffffff);
+  scene.add(light)
   scene.add(plane);
   renderer.render(scene, camera);
 }
@@ -51,8 +54,8 @@ const loader = new TextureLoader();
 
 GetPixels("fonts/h.png", (err, data) => {
   Reqwest("/data/whitney.json", (response) => {
-    loader.load("/fonts/H-transparent.png", (image) => {
-      initializeCanvas({data: data.data, width: data.shape[0], height: data.shape[1], image, elevations: response.reduce((a,r) => [...a, ...r])});
+    loader.load("/data/whitney.jpg", (image) => {
+      initializeCanvas({data: data.data, width: response[0].length, height: response.length, image, imageWidth: data.shape[0], imageHeight: data.shape[1], elevations: response.reduce((a,r) => [...a, ...r])});
     });
   });
 })

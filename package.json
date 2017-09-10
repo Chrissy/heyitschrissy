@@ -11,7 +11,9 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@mapbox/geo-viewport": "^0.2.2",
     "express": "^4.14.0",
+    "geo-viewport": "^0.2.1",
     "get-pixels": "^3.3.0",
     "pg": "^7.3.0",
     "three": "^0.87.1"
