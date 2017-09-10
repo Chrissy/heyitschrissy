@@ -11,7 +11,7 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
 
   console.log(width)
 
-  const camera = new PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
+  const camera = new PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;

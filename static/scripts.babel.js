@@ -54031,7 +54031,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
   console.log(width);
 
-  var camera = new _three.PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
+  var camera = new _three.PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
   var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
