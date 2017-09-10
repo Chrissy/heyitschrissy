@@ -54012,12 +54012,11 @@ var _three = require('three');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var loader = new _three.ImageLoader();
-
 var initializeCanvas = function initializeCanvas(_ref) {
   var data = _ref.data,
       width = _ref.width,
-      height = _ref.height;
+      height = _ref.height,
+      elevations = _ref.elevations;
 
   var scene = new _three.Scene({ autoUpdate: false });
   var canvas = document.getElementById('canvas');
@@ -54027,7 +54026,6 @@ var initializeCanvas = function initializeCanvas(_ref) {
   });
 
   var camera = new _three.PerspectiveCamera(52 / aspectRatio, aspectRatio, 0.1, 1000);
-  console.log(width, height);
   var geometry = new _three.PlaneGeometry(223, 223, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
@@ -54041,7 +54039,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
-    return (0, _assign2.default)(v, { z: oneDimensionalData[i] == 255 ? 0 : 50 });
+    return (0, _assign2.default)(v, { z: oneDimensionalData[i] == 255 ? 0 : elevations[i] / 100 });
   });
 
   plane.rotation.x = 5.7;
@@ -54051,7 +54049,11 @@ var initializeCanvas = function initializeCanvas(_ref) {
 };
 
 var pixels = (0, _getPixels2.default)("fonts/h.png", function (err, data) {
-  initializeCanvas({ data: data.data, width: data.shape[0], height: data.shape[1] });
+  (0, _reqwest2.default)("/data/whitney.json", function (response) {
+    initializeCanvas({ data: data.data, width: data.shape[0], height: data.shape[1], elevations: response.reduce(function (a, r) {
+        return [].concat((0, _toConsumableArray3.default)(a), (0, _toConsumableArray3.default)(r));
+      }) });
+  });
 });
 
 var requestImageSet = function requestImageSet(_ref2) {
