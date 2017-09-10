@@ -54040,7 +54040,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
-    return (0, _assign2.default)(v, { z: elevations[i] == null || oneDimensionalData[i] == 255 ? 0 : (elevations[i] - 2000) / 70 });
+    return (0, _assign2.default)(v, { z: oneDimensionalData[i] == 255 ? 0 : Math.max(elevations[i] - 2200, 0) / 70 });
   });
 
   plane.rotation.x = 5.3;
