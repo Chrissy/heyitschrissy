@@ -54016,6 +54016,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var data = _ref.data,
       width = _ref.width,
       height = _ref.height,
+      image = _ref.image,
       elevations = _ref.elevations;
 
   var scene = new _three.Scene({ autoUpdate: false });
@@ -54035,7 +54036,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
-  var material = new _three.MeshBasicMaterial({ color: 0xdddddd, wireframe: true });
+  var material = new _three.MeshPhongMaterial({ map: image });
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
@@ -54044,15 +54045,34 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
   plane.rotation.x = 5.7;
 
+  var lights = [];
+  lights[0] = new _three.PointLight(0xffffff, 0.75, 0);
+  lights[1] = new _three.PointLight(0xffffff, 0.75, 0);
+
+  lights[0].position.set(50, 10, 15);
+  lights[1].position.set(-50, -20, 15);
+
+  // var pointLightHelper = new PointLightHelper(lights[0],10);
+  // var pointLightHelper2 = new PointLightHelper(lights[1],10);
+  // scene.add(pointLightHelper);
+  // scene.add(pointLightHelper2);
+
+  scene.add(lights[0]);
+  scene.add(lights[1]);
+
   scene.add(plane);
   renderer.render(scene, camera);
 };
 
-var pixels = (0, _getPixels2.default)("fonts/h.png", function (err, data) {
+var loader = new _three.TextureLoader();
+
+(0, _getPixels2.default)("fonts/h.png", function (err, data) {
   (0, _reqwest2.default)("/data/whitney.json", function (response) {
-    initializeCanvas({ data: data.data, width: data.shape[0], height: data.shape[1], elevations: response.reduce(function (a, r) {
-        return [].concat((0, _toConsumableArray3.default)(a), (0, _toConsumableArray3.default)(r));
-      }) });
+    loader.load("/fonts/H-transparent.png", function (image) {
+      initializeCanvas({ data: data.data, width: data.shape[0], height: data.shape[1], image: image, elevations: response.reduce(function (a, r) {
+          return [].concat((0, _toConsumableArray3.default)(a), (0, _toConsumableArray3.default)(r));
+        }) });
+    });
   });
 });
 

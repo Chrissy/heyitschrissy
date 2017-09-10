@@ -1,9 +1,9 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
 import GetPixels from 'get-pixels';
-import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry} from 'three';
+import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, PointLightHelper, TextureLoader} from 'three';
 
-const initializeCanvas = ({data, width, height, elevations}) => {
+const initializeCanvas = ({data, width, height, image, elevations}) => {
   const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
   const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
@@ -19,7 +19,7 @@ const initializeCanvas = ({data, width, height, elevations}) => {
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
-  const material = new MeshBasicMaterial({color: 0xdddddd, wireframe: true});
+  const material = new MeshPhongMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
   plane.geometry.vertices.map((v,i) => {
@@ -28,13 +28,32 @@ const initializeCanvas = ({data, width, height, elevations}) => {
 
   plane.rotation.x = 5.7;
 
+  var lights = [];
+	lights[0] = new PointLight( 0xffffff, 0.75, 0 );
+	lights[1] = new PointLight( 0xffffff, 0.75, 0 );
+
+	lights[0].position.set( 50, 10, 15 );
+	lights[1].position.set( -50, -20, 15 );
+
+  // var pointLightHelper = new PointLightHelper(lights[0],10);
+  // var pointLightHelper2 = new PointLightHelper(lights[1],10);
+  // scene.add(pointLightHelper);
+  // scene.add(pointLightHelper2);
+
+	scene.add( lights[ 0 ] );
+	scene.add( lights[ 1 ] );
+
   scene.add(plane);
   renderer.render(scene, camera);
 }
 
-const pixels = GetPixels("fonts/h.png", (err, data) => {
+const loader = new TextureLoader();
+
+GetPixels("fonts/h.png", (err, data) => {
   Reqwest("/data/whitney.json", (response) => {
-    initializeCanvas({data: data.data, width: data.shape[0], height: data.shape[1], elevations: response.reduce((a,r) => [...a, ...r])});
+    loader.load("/fonts/H-transparent.png", (image) => {
+      initializeCanvas({data: data.data, width: data.shape[0], height: data.shape[1], image, elevations: response.reduce((a,r) => [...a, ...r])});
+    });
   });
 })
 
