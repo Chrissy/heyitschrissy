@@ -45757,19 +45757,18 @@ document.addEventListener("DOMContentLoaded", function () {
   if (_bowser2.default.msie) return;
   document.body.classList.remove("no-js");
 
-  var canvas1 = document.getElementById("canvas1");
-  var canvas2 = document.getElementById("canvas2");
-  [canvas1, canvas2].map(function (c) {
+  var canvases = [document.getElementById("canvas1"), document.getElementById("canvas2")];
+  var preloadImages = document.querySelectorAll('img.preload');
+  var toggleButtons = document.querySelectorAll('.toggle-button');
+  var slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  canvases.map(function (c) {
     return c.addEventListener('click', function () {
-      [canvas1, canvas2].map(function (c) {
+      canvases.map(function (c) {
         return c.classList.toggle('next');
       });
     });
   });
-
-  var preloadImages = document.querySelectorAll('img.preload');
-  var toggleButtons = document.querySelectorAll('.toggle-button');
-  var slidingSections = document.querySelectorAll('.sliding-site-section');
 
   createTerrainSketch(canvas1, "/dist/" + _guide2.default[0].name + ".json", function () {
     createTerrainSketch(canvas2, "/dist/" + _guide2.default[1].name + ".json", function () {});

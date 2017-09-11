@@ -52,15 +52,14 @@ document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
-  const canvas1 = document.getElementById("canvas1");
-  const canvas2 = document.getElementById("canvas2");
-  [canvas1, canvas2].map(c => c.addEventListener('click', () => {
-    [canvas1, canvas2].map(c => c.classList.toggle('next'));
-  }))
-
+  const canvases = [document.getElementById("canvas1"), document.getElementById("canvas2")];
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('.toggle-button');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  canvases.map(c => c.addEventListener('click', () => {
+    canvases.map(c => c.classList.toggle('next'));
+  }))
 
   createTerrainSketch(canvas1, "/dist/" + guide[0].name + ".json", () => {
     createTerrainSketch(canvas2, "/dist/" + guide[1].name + ".json", () => {});
