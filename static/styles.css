@@ -7,7 +7,6 @@
 }
 
 .canvas {
-  z-index: 999;
   width: 90%;
   height: 90%;
   -webkit-tap-highlight-color: transparent;
@@ -73,6 +72,7 @@ body.animating {
 .text-link {
   text-decoration: none;
   color: rgb(0, 194, 243);
+  cursor: pointer;
 }
 
 .email { word-break: break-all; }
@@ -87,7 +87,7 @@ body.animating {
 }
 
 .sliding-site-section.first {
-  transform: translateX(-100vw);
+  transform: translateX(100vw);
   background: rgb(227, 247, 255);
 }
 
@@ -96,9 +96,15 @@ body.animating {
   background: rgb(240, 240, 240);
 }
 
+.sliding-site-section.third {
+  transform: translateX(-100vw);
+  background: rgb(255, 234, 226);
+}
+
 body:not(.animating) { background: rgb(227, 247, 255); }
 
 body:not(.animating).showing-second-panel { background: rgb(240, 240, 240); }
+body:not(.animating).showing-third-panel { background: rgb(240, 240, 240); }
 
 body:not(.animating) .sliding-site-section:not(.showing) {
   overflow: hidden;
@@ -130,13 +136,23 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   text-align: center;
 }
 
-.toggle-button.images { right: 1rem; }
+.toggle-button.portfolio { right: 1rem; }
 
-.toggle-button.bio { left: 1rem; }
+.toggle-button.back.left {
+  left: 1rem;
+}
 
-.toggle-button.images .toggle-button-text { margin-right: 1.1em; }
+.toggle-button.back.right {
+  right: 1rem;
+}
 
-.toggle-button.bio .toggle-button-text { margin-left: 1.1em; }
+.toggle-button.right .toggle-button-text {
+  margin-right: 1.1em;
+}
+
+.toggle-button:not(.right) .toggle-button-text {
+  margin-left: 1.1em;
+}
 
 .no-js .toggle-button { display: none; }
 
@@ -170,7 +186,8 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   margin: 0 0 -2em 0;
   width: 60%;
   max-width: 600px;
-  z-indeX: 1;
+  z-index: 1;
+  position: relative;
 }
 
 @media (max-width: 600px) {

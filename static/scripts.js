@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let sketches = [];
   const canvas = document.getElementById("canvas1");
   const preloadImages = document.querySelectorAll('img.preload');
-  const toggleButtons = document.querySelectorAll('.toggle-button');
+  const toggleButtons = document.querySelectorAll('[show],[hide]');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
 
   guide.slice(0,2).forEach(s => {
@@ -84,12 +84,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  [...toggleButtons].forEach(function(toggleButton){
+  if (toggleButtons) toggleButtons.forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){
       document.body.classList.toggle('showing-second-panel');
 
-      [...slidingSections].forEach(element => element.classList.toggle('showing'));
-      [...toggleButtons].forEach(element => element.classList.toggle('showing'));
+      this.getAttribute("show").split(",").forEach(t => document.getElementById(t).classList.add('showing'));
+      this.getAttribute("hide").split(",").forEach(t => document.getElementById(t).classList.remove('showing'));
 
       document.body.classList.add('animating');
 
