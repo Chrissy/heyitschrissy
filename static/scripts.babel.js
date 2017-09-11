@@ -45246,6 +45246,7 @@ module.exports=[
   {
     "name": "whitney-reef",
     "mask": "./static/fonts/a.png",
+    "humanName": "Mt. Whitney & Capitol Reef",
     "innerTerrain": {
       "name": "mount-whitney",
       "zoom": 13,
@@ -45259,6 +45260,7 @@ module.exports=[
   },
   {
     "name": "crater-whitney",
+    "humanName": "Mt. Whitney & Crater Lake",
     "mask": "./static/fonts/q.png",
     "innerTerrain": {
       "name": "crater-lake",
@@ -45273,6 +45275,7 @@ module.exports=[
   },
   {
     "name": "zion-capitol-reef",
+    "humanName": "Capitol Reef & Zion National Park",
     "mask": "./static/fonts/a.png",
     "innerTerrain": {
       "name": "zion",
@@ -45365,11 +45368,6 @@ var getSketch = function getSketch(name, cb) {
   });
 };
 
-var createTerrainSketch = function createTerrainSketch(canvas, response) {
-  var w = Math.sqrt(response.elevations.length);
-  return initializeCanvas({ canvas: canvas, elevations: response.elevations, width: w, height: w, image: response.image });
-};
-
 var requestImageSet = function requestImageSet(_ref3) {
   var elementId = _ref3.elementId;
 
@@ -45385,6 +45383,11 @@ var requestImageSet = function requestImageSet(_ref3) {
   if (potentialNextSet) requestImageSet({ elementId: potentialNextSet });
 };
 
+var createTerrainSketch = function createTerrainSketch(canvas, response) {
+  var w = Math.sqrt(response.elevations.length);
+  return initializeCanvas({ canvas: canvas, elevations: response.elevations, width: w, height: w, image: response.image });
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   if (_bowser2.default.msie) return;
   document.body.classList.remove("no-js");
@@ -45395,8 +45398,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var preloadImages = document.querySelectorAll('img.preload');
   var toggleButtons = document.querySelectorAll('[show],[hide]');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
+  var sketchTitle = document.getElementById('sketch-title');
 
-  var initializeSketchEvents = function initializeSketchEvents(sketch) {
+  var initializeSketchControls = function initializeSketchControls(sketch) {
+    sketchTitle.innerText = _guide2.default[0].humanName;
     [canvas, control].forEach(function (c) {
       return c.addEventListener('click', function () {
         sketches[sketches.length - 1].then(function (response) {
@@ -45406,6 +45411,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sketches = sketches.slice(0, 1);
           };
           drawTerrain({ plane: sketch.plane, image: response.image, elevations: response.elevations });
+          sketchTitle.innerText = _guide2.default[sketches.length - 1].humanName;
         });
       });
     });
@@ -45418,7 +45424,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   sketches[0].then(function (response) {
     var sketch = createTerrainSketch(canvas, response);
-    initializeSketchEvents(sketch);
+    initializeSketchControls(sketch);
   });
 
   if (toggleButtons) toggleButtons.forEach(function (toggleButton) {

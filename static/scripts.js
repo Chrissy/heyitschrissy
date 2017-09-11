@@ -40,11 +40,6 @@ const initializeCanvas = ({canvas, width, height, image, elevations}) => {
 
 const getSketch = (name, cb) => fetch("/dist/" + name + ".json").then(r => r.json());
 
-const createTerrainSketch = (canvas, response) => {
-  const w = Math.sqrt(response.elevations.length);
-  return initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image: response.image});
-};
-
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
   fetch(el.getAttribute('src')).then(r => r.text()).then((html) => {
@@ -56,6 +51,11 @@ const requestImageSet = ({elementId}) => {
   if (potentialNextSet) requestImageSet({elementId: potentialNextSet});
 }
 
+const createTerrainSketch = (canvas, response) => {
+  const w = Math.sqrt(response.elevations.length);
+  return initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image: response.image});
+};
+
 document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
@@ -66,14 +66,17 @@ document.addEventListener("DOMContentLoaded", function() {
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('[show],[hide]');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
+  const sketchTitle = document.getElementById('sketch-title');
 
-  const initializeSketchEvents = (sketch) => {
+  const initializeSketchControls = (sketch) => {
+    sketchTitle.innerText = guide[0].humanName;
     [canvas, control].forEach(c => c.addEventListener('click', () => {
       sketches[sketches.length - 1].then((response) => {
         if (guide[sketches.length]) {
           sketches.push(getSketch(guide[sketches.length].name))
         } else { sketches = sketches.slice(0, 1) };
         drawTerrain({plane: sketch.plane, image: response.image, elevations: response.elevations});
+        sketchTitle.innerText = guide[sketches.length - 1].humanName;
       });
     }));
   }
@@ -85,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   sketches[0].then((response) => {
     const sketch = createTerrainSketch(canvas, response);
-    initializeSketchEvents(sketch)
+    initializeSketchControls(sketch);
   });
 
   if (toggleButtons) toggleButtons.forEach((toggleButton) => {

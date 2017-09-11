@@ -2,6 +2,7 @@
   {
     "name": "whitney-reef",
     "mask": "./static/fonts/a.png",
+    "humanName": "Mt. Whitney & Capitol Reef",
     "innerTerrain": {
       "name": "mount-whitney",
       "zoom": 13,
@@ -15,6 +16,7 @@
   },
   {
     "name": "crater-whitney",
+    "humanName": "Mt. Whitney & Crater Lake",
     "mask": "./static/fonts/q.png",
     "innerTerrain": {
       "name": "crater-lake",
@@ -29,6 +31,7 @@
   },
   {
     "name": "zion-capitol-reef",
+    "humanName": "Capitol Reef & Zion National Park",
     "mask": "./static/fonts/a.png",
     "innerTerrain": {
       "name": "zion",
