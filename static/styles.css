@@ -167,7 +167,7 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 
 .text-block.intro {
   font-size: 0.75em;
-  margin: 0;
+  margin: 0 0 -2em 0;
   width: 60%;
   max-width: 600px;
   z-indeX: 1;

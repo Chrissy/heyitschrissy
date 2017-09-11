@@ -12,7 +12,7 @@ const drawTerrain = ({plane, image, elevations}) => {
 }
 
 const initializeCanvas = ({canvas, width, height, image, elevations}) => {
-  const size = Math.min(Math.max(canvas.offsetWidth, 600), 800);
+  const size = Math.min(Math.max(canvas.offsetWidth, 600), 700);
   const camera = new PerspectiveCamera(42, 1, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});

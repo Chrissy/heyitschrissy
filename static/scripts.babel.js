@@ -45726,7 +45726,7 @@ var initializeCanvas = function initializeCanvas(_ref2) {
       image = _ref2.image,
       elevations = _ref2.elevations;
 
-  var size = Math.min(Math.max(canvas.offsetWidth, 600), 800);
+  var size = Math.min(Math.max(canvas.offsetWidth, 600), 700);
   var camera = new _three.PerspectiveCamera(42, 1, 0.1, 1000);
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   var scene = new _three.Scene({ autoUpdate: false });
