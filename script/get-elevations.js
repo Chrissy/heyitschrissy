@@ -69,10 +69,10 @@ const compositeEarthImages = (place1, place2, compositeImage, cb) => {
 const createTerrainBundle = (place1, place2, compositeImage) => {
   combineElevations(place1, place2, compositeImage, (mappedElevations) => {
     compositeEarthImages(place1, place2, compositeImage, (newImage) => {
-      const path = `/data/${place1.name}-${place2.name}.jpg`;
-      const json = JSON.stringify({elevations: mappedElevations, image: path})
-      newImage.write("./static" + path);
-      fs.writeFileSync(`./static/data/${place1.name}-${place2.name}.json`, json);
+      newImage.getBase64(jimp.MIME_JPEG, (err, base64Image) => {
+        const json = JSON.stringify({elevations: mappedElevations, image: base64Image})
+        fs.writeFileSync(`./static/data/${place1.name}-${place2.name}.json`, json);
+      })
     })
   })
 }
