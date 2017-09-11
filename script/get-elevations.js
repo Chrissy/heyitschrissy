@@ -70,7 +70,7 @@ const createTerrainBundle = ({innerTerrain, outerTerrain, name, mask, cb}) => {
     compositeTerrain(innerTerrain, outerTerrain, mask, (newImage) => {
       newImage.getBase64(jimp.MIME_JPEG, (err, base64Image) => {
         const json = JSON.stringify({elevations: mappedElevations, image: base64Image})
-        fs.writeFileSync(`./static/data/${name}.json`, json);
+        fs.writeFileSync(`./static/dist/${name}.json`, json);
         cb();
       })
     })
