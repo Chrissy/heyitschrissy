@@ -33,11 +33,8 @@ const placeToMapboxStaticApiUrl = ({coordinates, zoom}) => {
 
 const compositeEarthImages = (place1, place2) => {
   jimp.read(placeToMapboxStaticApiUrl({...place2}), (err, image2) => {
-    console.log("made it")
     jimp.read('./static/fonts/q.jpg', (err, letter) => {
-      console.log("made it")
       image2.mask(letter, 0, 0);
-      console.log("made it")
       jimp.read(placeToMapboxStaticApiUrl({...place1}), (err, image1) => {
         image1.composite(image2, 0, 0).write(`./static/data/${place1.name}-${place2.name}.jpg`)
       });
