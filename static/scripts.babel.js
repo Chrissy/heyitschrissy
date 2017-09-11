@@ -46314,7 +46314,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
     plane.rotation.x = x;
     renderer.render(scene, camera);
     window.requestAnimationFrame(function () {
-      return spinZ(z + 0.001, x + 0.0001);
+      return spinZ(z + 0.0005, x + 0.00005);
     });
   };
 
