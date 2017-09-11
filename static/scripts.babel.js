@@ -45415,8 +45415,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (toggleButtons) toggleButtons.forEach(function (toggleButton) {
     toggleButton.addEventListener('click', function () {
-      document.body.classList.toggle('showing-second-panel');
-
       this.getAttribute("show").split(",").forEach(function (t) {
         return document.getElementById(t).classList.add('showing');
       });
@@ -45435,7 +45433,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.onunload = function () {
-  if (document.body.classList.contains('showing-second-panel')) window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 };
 
 },{"../script/guide.json":40,"babel-runtime/core-js/object/assign":1,"bowser":2,"three":39}]},{},[41]);

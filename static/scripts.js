@@ -86,8 +86,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   if (toggleButtons) toggleButtons.forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){
-      document.body.classList.toggle('showing-second-panel');
-
       this.getAttribute("show").split(",").forEach(t => document.getElementById(t).classList.add('showing'));
       this.getAttribute("hide").split(",").forEach(t => document.getElementById(t).classList.remove('showing'));
 
@@ -102,5 +100,5 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 window.onunload = () => {
-  if (document.body.classList.contains('showing-second-panel')) window.scrollTo(0,0);
+  window.scrollTo(0,0);
 }

@@ -87,8 +87,12 @@ body.animating {
 }
 
 .sliding-site-section.first {
-  transform: translateX(100vw);
+  transform: translateX(-100vw);
   background: rgb(227, 247, 255);
+}
+
+.sliding-site-section.third.showing + .sliding-site-section.first {
+  transform: translateX(100vw);
 }
 
 .sliding-site-section.second {
@@ -100,11 +104,6 @@ body.animating {
   transform: translateX(-100vw);
   background: rgb(255, 234, 226);
 }
-
-body:not(.animating) { background: rgb(227, 247, 255); }
-
-body:not(.animating).showing-second-panel { background: rgb(240, 240, 240); }
-body:not(.animating).showing-third-panel { background: rgb(240, 240, 240); }
 
 body:not(.animating) .sliding-site-section:not(.showing) {
   overflow: hidden;
@@ -125,8 +124,16 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   min-height: 1.5rem;
   fill: rgb(0, 194, 243);
   opacity: 0;
-  transform: translateY(1em);
-  transition: .5s all cubic-bezier(1, 0, 0, 1) .3s;
+  transition: .5s opacity cubic-bezier(1, 0, 0, 1);
+}
+
+body:not(.animating) .toggle-button {
+  transform: translateY(-100vh);
+}
+
+body .toggle-button.showing {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .toggle-button-text {
@@ -155,11 +162,6 @@ body:not(.animating) .sliding-site-section:not(.showing) {
 }
 
 .no-js .toggle-button { display: none; }
-
-.toggle-button.showing {
-  transform: translateY(0);
-  opacity: 1;
-}
 
 .big-image {
   width: 100%;
