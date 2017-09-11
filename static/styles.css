@@ -83,6 +83,7 @@ body.animating {
   left: 0;
   margin: 0 auto;
   width: 100%;
+  min-height: 100vh;
   transition: .5s transform cubic-bezier(1, 0, 0, 1);
 }
 
