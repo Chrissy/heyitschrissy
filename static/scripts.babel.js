@@ -46298,36 +46298,29 @@ var initializeCanvas = function initializeCanvas(_ref) {
       image = _ref.image,
       elevations = _ref.elevations;
 
-  var scene = new _three.Scene({ autoUpdate: false });
   var canvas = document.getElementById('canvas');
   var camera = new _three.PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
-  camera.position.z = 400;
-
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
-  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-
+  var scene = new _three.Scene({ autoUpdate: false });
   var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
-  var material = new _three.MeshPhongMaterial({ map: image });
+  var material = new _three.MeshBasicMaterial({ map: image });
   var plane = new _three.Mesh(geometry, material);
 
+  camera.position.z = 400;
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
   plane.geometry.vertices.map(function (v, i) {
     return (0, _assign2.default)(v, { z: elevations[i] / 100 });
   });
-
   plane.rotation.x = 5.6;
   plane.rotation.z = 3.75;
 
-  var light = new _three.AmbientLight(0xffffff, 1);
-  scene.add(light);
   scene.add(plane);
   renderer.render(scene, camera);
 };
 
-var loader = new _three.TextureLoader();
-
 (0, _reqwest2.default)("/dist/crater-whitney.json", function (response) {
-  loader.load(response.image, function (image) {
+  new _three.TextureLoader().load(response.image, function (image) {
     var w = Math.sqrt(response.elevations.length);
     initializeCanvas({ elevations: response.elevations, width: w, height: w, image: image });
   });

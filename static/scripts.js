@@ -1,38 +1,29 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
-import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, AmbientLight, TextureLoader} from 'three';
+import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
 
 const initializeCanvas = ({width, height, image, elevations}) => {
-  const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
   const camera = new PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
-  camera.position.z = 400;
-
   const renderer = new WebGLRenderer({canvas, alpha: true});
-  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-
+  const scene = new Scene({autoUpdate: false});
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
-  const material = new MeshPhongMaterial({map: image});
+  const material = new MeshBasicMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
-  plane.geometry.vertices.map((v, i) => {
-    return Object.assign(v, { z: elevations[i] / 100 })
-  });
-
+  camera.position.z = 400;
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
   plane.rotation.x = 5.6;
   plane.rotation.z = 3.75;
 
-  const light = new AmbientLight(0xffffff, 1);
-  scene.add(light)
   scene.add(plane);
   renderer.render(scene, camera);
 }
 
-const loader = new TextureLoader();
-
 Reqwest("/dist/crater-whitney.json", (response) => {
-  loader.load(response.image, (image) => {
+  new TextureLoader().load(response.image, (image) => {
     const w = Math.sqrt(response.elevations.length);
     initializeCanvas({elevations: response.elevations, width: w, height: w, image});
   });
