@@ -60,6 +60,10 @@ body.animating {
   box-sizing: border-box;
 }
 
+.content-container.images {
+  max-width: 1000px;
+}
+
 .content-container, .image-batch {
   display: flex;
   flex-direction: column;
@@ -103,7 +107,7 @@ body.animating {
 
 .sliding-site-section.third {
   transform: translateX(-100vw);
-  background: rgb(255, 234, 226);
+  background: rgb(255, 230, 240);;
 }
 
 body:not(.animating) .sliding-site-section:not(.showing) {
@@ -158,8 +162,8 @@ body .toggle-button.showing {
   margin-right: 1.1em;
 }
 
-.toggle-button:not(.right) .toggle-button-text {
-  margin-left: 1.1em;
+.toggle-button.left .toggle-button-text {
+  margin-left: 0.8em;
 }
 
 .no-js .toggle-button { display: none; }

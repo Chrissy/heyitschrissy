@@ -47,8 +47,8 @@ const createTerrainSketch = (canvas, response) => {
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
-  Reqwest(el.getAttribute('src'), (response) => {
-    el.innerHTML = response;
+  fetch(el.getAttribute('src')).then(r => r.text()).then((html) => {
+    el.innerHTML = html;
     el.classList.add('loaded');
   });
 
@@ -84,17 +84,20 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  if (toggleButtons) toggleButtons.forEach(function(toggleButton){
+  if (toggleButtons) toggleButtons.forEach((toggleButton) => {
     toggleButton.addEventListener('click', function(){
       this.getAttribute("show").split(",").forEach(t => document.getElementById(t).classList.add('showing'));
       this.getAttribute("hide").split(",").forEach(t => document.getElementById(t).classList.remove('showing'));
 
       document.body.classList.add('animating');
 
-      document.body.addEventListener("transitionend", () => {
+      const transitionEnd = () => {
+        if (this.getAttribute("shouldLoadImages")) requestImageSet({elementId: "image-set-1"});
         document.body.classList.remove('animating');
-        document.body.removeEventListener("transitionend");
-      });
+        document.body.removeEventListener("transitionend", transitionEnd);
+      }
+
+      const removeAnimating = document.body.addEventListener("transitionend", transitionEnd);
     });
   });
 });

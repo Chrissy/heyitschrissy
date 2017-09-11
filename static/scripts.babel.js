@@ -45374,8 +45374,10 @@ var requestImageSet = function requestImageSet(_ref3) {
   var elementId = _ref3.elementId;
 
   var el = document.getElementById(elementId);
-  Reqwest(el.getAttribute('src'), function (response) {
-    el.innerHTML = response;
+  fetch(el.getAttribute('src')).then(function (r) {
+    return r.text();
+  }).then(function (html) {
+    el.innerHTML = html;
     el.classList.add('loaded');
   });
 
@@ -45415,6 +45417,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (toggleButtons) toggleButtons.forEach(function (toggleButton) {
     toggleButton.addEventListener('click', function () {
+      var _this = this;
+
       this.getAttribute("show").split(",").forEach(function (t) {
         return document.getElementById(t).classList.add('showing');
       });
@@ -45424,10 +45428,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.body.classList.add('animating');
 
-      document.body.addEventListener("transitionend", function () {
+      var transitionEnd = function transitionEnd() {
+        if (_this.getAttribute("shouldLoadImages")) requestImageSet({ elementId: "image-set-1" });
         document.body.classList.remove('animating');
-        document.body.removeEventListener("transitionend");
-      });
+        document.body.removeEventListener("transitionend", transitionEnd);
+      };
+
+      var removeAnimating = document.body.addEventListener("transitionend", transitionEnd);
     });
   });
 });
