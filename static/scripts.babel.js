@@ -45328,7 +45328,7 @@ var initializeCanvas = function initializeCanvas(_ref2) {
       image = _ref2.image,
       elevations = _ref2.elevations;
 
-  var size = Math.min(Math.max(canvas.offsetWidth, 600), 700);
+  var size = Math.min(Math.max(canvas.offsetWidth, 550), 700);
   var camera = new _three.PerspectiveCamera(42, 1, 0.1, 1000);
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   var scene = new _three.Scene({ autoUpdate: false });
@@ -45390,10 +45390,26 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.classList.remove("no-js");
 
   var sketches = [];
-  var canvas = document.getElementById("canvas1");
+  var canvas = document.getElementById("canvas");
+  var control = document.getElementById("canvas-control");
   var preloadImages = document.querySelectorAll('img.preload');
   var toggleButtons = document.querySelectorAll('[show],[hide]');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  var initializeSketchEvents = function initializeSketchEvents(sketch) {
+    [canvas, control].forEach(function (c) {
+      return c.addEventListener('click', function () {
+        sketches[sketches.length - 1].then(function (response) {
+          if (_guide2.default[sketches.length]) {
+            sketches.push(getSketch(_guide2.default[sketches.length].name));
+          } else {
+            sketches = sketches.slice(0, 1);
+          };
+          drawTerrain({ plane: sketch.plane, image: response.image, elevations: response.elevations });
+        });
+      });
+    });
+  };
 
   _guide2.default.slice(0, 2).forEach(function (s) {
     var sketch = getSketch(s.name);
@@ -45402,17 +45418,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   sketches[0].then(function (response) {
     var sketch = createTerrainSketch(canvas, response);
-
-    canvas.addEventListener('click', function () {
-      sketches[sketches.length - 1].then(function (response) {
-        if (_guide2.default[sketches.length]) {
-          sketches.push(getSketch(_guide2.default[sketches.length].name));
-        } else {
-          sketches = sketches.slice(0, 1);
-        };
-        drawTerrain({ plane: sketch.plane, image: response.image, elevations: response.elevations });
-      });
-    });
+    initializeSketchEvents(sketch);
   });
 
   if (toggleButtons) toggleButtons.forEach(function (toggleButton) {

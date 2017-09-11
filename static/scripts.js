@@ -12,7 +12,7 @@ const drawTerrain = ({plane, image, elevations}) => {
 }
 
 const initializeCanvas = ({canvas, width, height, image, elevations}) => {
-  const size = Math.min(Math.max(canvas.offsetWidth, 600), 700);
+  const size = Math.min(Math.max(canvas.offsetWidth, 550), 700);
   const camera = new PerspectiveCamera(42, 1, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});
@@ -61,10 +61,22 @@ document.addEventListener("DOMContentLoaded", function() {
   document.body.classList.remove("no-js");
 
   let sketches = [];
-  const canvas = document.getElementById("canvas1");
+  const canvas = document.getElementById("canvas");
+  const control = document.getElementById("canvas-control")
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('[show],[hide]');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  const initializeSketchEvents = (sketch) => {
+    [canvas, control].forEach(c => c.addEventListener('click', () => {
+      sketches[sketches.length - 1].then((response) => {
+        if (guide[sketches.length]) {
+          sketches.push(getSketch(guide[sketches.length].name))
+        } else { sketches = sketches.slice(0, 1) };
+        drawTerrain({plane: sketch.plane, image: response.image, elevations: response.elevations});
+      });
+    }));
+  }
 
   guide.slice(0,2).forEach(s => {
     const sketch = getSketch(s.name);
@@ -73,15 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   sketches[0].then((response) => {
     const sketch = createTerrainSketch(canvas, response);
-
-    canvas.addEventListener('click', () => {
-      sketches[sketches.length - 1].then((response) => {
-        if (guide[sketches.length]) {
-          sketches.push(getSketch(guide[sketches.length].name))
-        } else { sketches = sketches.slice(0, 1) };
-        drawTerrain({plane: sketch.plane, image: response.image, elevations: response.elevations});
-      });
-    });
+    initializeSketchEvents(sketch)
   });
 
   if (toggleButtons) toggleButtons.forEach((toggleButton) => {
