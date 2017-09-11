@@ -12,7 +12,8 @@ const drawTerrain = ({plane, image, elevations}) => {
 }
 
 const initializeCanvas = ({canvas, width, height, image, elevations}) => {
-  const camera = new PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+  const size = Math.min(Math.max(canvas.offsetWidth, 600), 800);
+  const camera = new PerspectiveCamera(42, 1, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
@@ -28,7 +29,7 @@ const initializeCanvas = ({canvas, width, height, image, elevations}) => {
 
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  renderer.setSize(size, size);
 
   drawTerrain({plane, image, elevations});
   spinZ()

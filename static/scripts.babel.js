@@ -45726,7 +45726,8 @@ var initializeCanvas = function initializeCanvas(_ref2) {
       image = _ref2.image,
       elevations = _ref2.elevations;
 
-  var camera = new _three.PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+  var size = Math.min(Math.max(canvas.offsetWidth, 600), 800);
+  var camera = new _three.PerspectiveCamera(42, 1, 0.1, 1000);
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   var scene = new _three.Scene({ autoUpdate: false });
   var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
@@ -45747,7 +45748,7 @@ var initializeCanvas = function initializeCanvas(_ref2) {
 
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  renderer.setSize(size, size);
 
   drawTerrain({ plane: plane, image: image, elevations: elevations });
   spinZ();
