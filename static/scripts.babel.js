@@ -46306,17 +46306,27 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var material = new _three.MeshBasicMaterial({ map: image });
   var plane = new _three.Mesh(geometry, material);
 
+  var spinZ = function spinZ() {
+    var z = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 3.75;
+    var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5.6;
+
+    plane.rotation.z = z;
+    plane.rotation.x = x;
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(function () {
+      return spinZ(z + 0.001, x + 0.0001);
+    });
+  };
+
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
   plane.geometry.vertices.map(function (v, i) {
     return (0, _assign2.default)(v, { z: elevations[i] / 100 });
   });
-  plane.rotation.x = 5.6;
-  plane.rotation.z = 3.75;
 
+  spinZ();
   scene.add(plane);
-  renderer.render(scene, camera);
 };
 
 (0, _reqwest2.default)("/dist/crater-whitney.json", function (response) {

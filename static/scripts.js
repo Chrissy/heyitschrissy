@@ -11,15 +11,20 @@ const initializeCanvas = ({width, height, image, elevations}) => {
   const material = new MeshBasicMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
+  const spinZ = (z = 3.75, x = 5.6) => {
+    plane.rotation.z = z;
+    plane.rotation.x = x;
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(() => spinZ(z + 0.001, x + 0.0001));
+  }
+
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
   plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
-  plane.rotation.x = 5.6;
-  plane.rotation.z = 3.75;
 
+  spinZ()
   scene.add(plane);
-  renderer.render(scene, camera);
 }
 
 Reqwest("/dist/crater-whitney.json", (response) => {
