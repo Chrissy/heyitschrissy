@@ -21,6 +21,12 @@ const scanImage = (i) => {
   return onOffMap;
 }
 
+const antiAliasNulls = (evs) => {
+  const width = Math.sqrt(evs.length);
+  const getBetterNumber = (i) => evs[i - width] || evs[i + width] ||  evs[i - 1] || evs[i + 1];
+  return evs.map((z,i) => (z == null) ? getBetterNumber(i) : z);
+}
+
 const getElevations = ({name, zoom, coordinates}, cb) => {
   const envelope = bounds(coordinates, zoom, [800, 800]);
   const sql = `SELECT to_json(ST_DumpValues(
@@ -43,8 +49,8 @@ const compositeElevations = (place1, place2, compositeImage, cb) => {
   getElevations(place1, (elevations1) => {
     getElevations(place2, (elevations2) => {
       const width = Math.min(elevations1.length, elevations2.length);
-      const sliced1 = elevations1.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
-      const sliced2 = elevations2.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
+      const sliced1 = antiAliasNulls(elevations1.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]));
+      const sliced2 = antiAliasNulls(elevations2.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]));
       jimp.read(compositeImage, (err, letterImage) => {
         const pixelMap = scanImage(letterImage.resize(width, width));
         const mappedElevations = sliced1.map((s, i) => (pixelMap[i] == 0) ? sliced1[i] : sliced2[i]);

@@ -2,12 +2,12 @@
   {
     "name": "crater-whitney",
     "mask": "./static/fonts/q.png",
-    "outerTerrain": {
+    "innerTerrain": {
       "name": "crater-lake",
       "zoom": 13,
       "coordinates": [-122.1085,42.9384]
     },
-    "innerTerrain": {
+    "outerTerrain": {
       "name": "mount-whitney",
       "zoom": 13,
       "coordinates": [-118.2923, 36.5785]
@@ -16,12 +16,12 @@
   {
     "name": "zion-capitol-reef",
     "mask": "./static/fonts/a.png",
-    "outerTerrain": {
+    "innerTerrain": {
       "name": "zion",
       "zoom": 12,
       "coordinates": [-113.0263, 37.2982]
     },
-    "innerTerrain": {
+    "outerTerrain": {
       "name": "capitol-reef",
       "zoom": 12,
       "coordinates": [-111.3555,38.3270]

@@ -46329,7 +46329,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
 var loader = new _three.TextureLoader();
 
-(0, _reqwest2.default)("/data/crater-lake-mount-whitney.json", function (response) {
+(0, _reqwest2.default)("/dist/crater-whitney.json", function (response) {
   loader.load(response.image, function (image) {
     var w = Math.sqrt(response.elevations.length);
     initializeCanvas({ elevations: response.elevations, width: w, height: w, image: image });

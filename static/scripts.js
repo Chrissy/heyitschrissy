@@ -34,7 +34,7 @@ const initializeCanvas = ({width, height, image, elevations}) => {
 
 const loader = new TextureLoader();
 
-Reqwest("/data/crater-lake-mount-whitney.json", (response) => {
+Reqwest("/dist/crater-whitney.json", (response) => {
   loader.load(response.image, (image) => {
     const w = Math.sqrt(response.elevations.length);
     initializeCanvas({elevations: response.elevations, width: w, height: w, image});
