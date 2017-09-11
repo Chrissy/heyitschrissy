@@ -1,6 +1,9 @@
 import Bowser from 'bowser';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
-import guide from '../script/guide.json';
+import guideJson from '../script/guide.json';
+import shuffle from 'array-shuffle';
+
+const guide = shuffle(guideJson);
 
 const drawTerrain = ({plane, image, elevations}) => {
   plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
