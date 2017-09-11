@@ -8,9 +8,6 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
   const canvas = document.getElementById('canvas');
   const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
   const oneDimensionalData = data.filter((d,i) => i % 4 == 0);
-
-  console.log(width)
-
   const camera = new PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
@@ -24,9 +21,8 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
   const material = new MeshPhongMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
-
   plane.geometry.vertices.map((v,i) => {
-    const add = (oneDimensionalData[i] == 0) ? elevations2[i] : elevations[i];
+    const add = (oneDimensionalData[i] == 0) ? elevations[i] - 1000: elevations[i];
     return Object.assign(v, { z: add / 200 })
   });
 
@@ -50,10 +46,10 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
 
 const loader = new TextureLoader();
 
-GetPixels("fonts/h.png", (err, data) => {
-  Reqwest("/data/whitney.json", (response) => {
-    Reqwest("/data/zion.json", (response2) => {
-      loader.load("/data/whitney-h.png", (image) => {
+GetPixels("fonts/q.png", (err, data) => {
+  Reqwest("/data/capitol-reef.json", (response) => {
+    Reqwest("/data/crater-lake.json", (response2) => {
+      loader.load("/data/capitol-crater.png", (image) => {
         const w = Math.min(response[0].length, response2[0].length);
         const sliced1 = response.map(p => p.slice(0, w)).slice(0, w);
         const sliced2 = response2.map(p => p.slice(0, w)).slice(0, w);

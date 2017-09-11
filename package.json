@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "watchify -t [ babelify ] static/scripts.js -o static/scripts.babel.js & node server.js",
-    "minify_images": "node script/minify_images.js"
+    "minify_images": "node script/minify_images.js",
+    "elevations": "node script/get-elevations.js"
   },
   "license": "ISC",
   "dependencies": {
@@ -28,6 +29,8 @@
     "imagemin": "^5.2.2",
     "imagemin-mozjpeg": "^6.0.0",
     "imagemin-pngquant": "^5.0.1",
+    "jimp": "^0.2.28",
+    "node-fetch": "^1.7.3",
     "reqwest": "^2.0.5",
     "watchify": "^3.7.0"
   }

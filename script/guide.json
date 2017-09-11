@@ -1,0 +1,19 @@
+[
+{
+  "name": "zion",
+  "zoom": 10,
+  "coordinates": [-113.0263, 37.2982]
+}, {
+  "name": "mount-whitney",
+  "zoom": 10,
+  "coordinates": [-118.2923, 36.5785]
+}, {
+  "name": "crater-lake",
+  "zoom": 13,
+  "coordinates": [-122.1085,42.9384]
+}, {
+  "name": "capitol-reef",
+  "zoom": 13,
+  "coordinates": [-111.3555,38.3270]
+}
+]

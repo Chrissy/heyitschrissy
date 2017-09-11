@@ -54028,9 +54028,6 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var oneDimensionalData = data.filter(function (d, i) {
     return i % 4 == 0;
   });
-
-  console.log(width);
-
   var camera = new _three.PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
   var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
@@ -54045,7 +54042,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
-    var add = oneDimensionalData[i] == 0 ? elevations2[i] : elevations[i];
+    var add = oneDimensionalData[i] == 0 ? elevations[i] - 1000 : elevations[i];
     return (0, _assign2.default)(v, { z: add / 200 });
   });
 
@@ -54069,10 +54066,10 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
 var loader = new _three.TextureLoader();
 
-(0, _getPixels2.default)("fonts/h.png", function (err, data) {
-  (0, _reqwest2.default)("/data/whitney.json", function (response) {
-    (0, _reqwest2.default)("/data/zion.json", function (response2) {
-      loader.load("/data/whitney-h.png", function (image) {
+(0, _getPixels2.default)("fonts/q.png", function (err, data) {
+  (0, _reqwest2.default)("/data/capitol-reef.json", function (response) {
+    (0, _reqwest2.default)("/data/crater-lake.json", function (response2) {
+      loader.load("/data/capitol-crater.png", function (image) {
         var w = Math.min(response[0].length, response2[0].length);
         var sliced1 = response.map(function (p) {
           return p.slice(0, w);
