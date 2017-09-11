@@ -27,10 +27,10 @@ const antiAliasNulls = (evs) => {
   return evs.map((z,i) => (z == null) ? getBetterNumber(i) : z);
 }
 
-const getElevations = ({name, zoom, coordinates}, cb) => {
+const getElevations = ({zoom, coordinates}, cb) => {
   const envelope = bounds(coordinates, zoom, [800, 800]);
   const sql = `SELECT to_json(ST_DumpValues(
-    ST_Clip(ST_Union(rast), ST_MakeEnvelope(${envelope.join(",")}, 4326))
+    ST_Resize(ST_SnapToGrid(ST_Clip(ST_Union(rast), ST_MakeEnvelope(${envelope.join(",")}, 4326)), 1, 1), 100, 100)
   )) AS rast FROM elevations
   WHERE ST_Intersects(rast,
     ST_MakeEnvelope(${envelope.join(",")}, 4326)
@@ -75,7 +75,7 @@ const createTerrainBundle = ({innerTerrain, outerTerrain, name, mask, cb}) => {
   compositeElevations(innerTerrain, outerTerrain, mask, (mappedElevations) => {
     compositeTerrain(innerTerrain, outerTerrain, mask, (newImage) => {
       newImage.getBase64(jimp.MIME_JPEG, (err, base64Image) => {
-        const json = JSON.stringify({elevations: mappedElevations, image: base64Image})
+        const json = JSON.stringify({name, elevations: mappedElevations, image: base64Image})
         fs.writeFileSync(`./static/dist/${name}.json`, json);
         cb();
       })

@@ -2,12 +2,21 @@ import Bowser from 'bowser';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
 import guide from '../script/guide.json';
 
+const drawTerrain = ({plane, image, elevations}) => {
+  plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
+  plane.geometry.verticesNeedUpdate = true;
+  new TextureLoader().load(image, (img) => {
+    plane.material.map = img;
+    plane.material.needsUpdate = true;
+  });
+}
+
 const initializeCanvas = ({canvas, width, height, image, elevations}) => {
   const camera = new PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});
   const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
-  const material = new MeshBasicMaterial({map: image});
+  const material = new MeshBasicMaterial();
   const plane = new Mesh(geometry, material);
 
   const spinZ = (z = 3.75, x = 5.6) => {
@@ -20,22 +29,20 @@ const initializeCanvas = ({canvas, width, height, image, elevations}) => {
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-  plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
 
+  drawTerrain({plane, image, elevations});
   spinZ()
   scene.add(plane);
 
-  return canvas;
+  return {canvas, plane};
 }
 
-const createTerrainSketch = (canvas, url, cb) => {
-  fetch(url).then(r => r.json()).then((response) => {
-    new TextureLoader().load(response.image, (image) => {
-      const w = Math.sqrt(response.elevations.length);
-      cb(initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image}));
-    });
-  });
-}
+const getSketch = (name, cb) => fetch("/dist/" + name + ".json").then(r => r.json());
+
+const createTerrainSketch = (canvas, response) => {
+  const w = Math.sqrt(response.elevations.length);
+  return initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image: response.image});
+};
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
@@ -52,17 +59,28 @@ document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
-  const canvases = [document.getElementById("canvas1"), document.getElementById("canvas2")];
+  let sketches = [];
+  const canvas = document.getElementById("canvas1");
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('.toggle-button');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
 
-  canvases.map(c => c.addEventListener('click', () => {
-    canvases.map(c => c.classList.toggle('next'));
-  }))
+  guide.slice(0,2).forEach(s => {
+    const sketch = getSketch(s.name);
+    sketches.push(sketch)
+  });
 
-  createTerrainSketch(canvas1, "/dist/" + guide[0].name + ".json", () => {
-    createTerrainSketch(canvas2, "/dist/" + guide[1].name + ".json", () => {});
+  sketches[0].then((response) => {
+    const sketch = createTerrainSketch(canvas, response);
+
+    canvas.addEventListener('click', () => {
+      sketches[sketches.length - 1].then((response) => {
+        if (guide[sketches.length]) {
+          sketches.push(getSketch(guide[sketches.length].name))
+        } else { sketches = sketches.slice(0, 1) };
+        drawTerrain({plane: sketch.plane, image: response.image, elevations: response.elevations});
+      });
+    });
   });
 
   [...toggleButtons].forEach(function(toggleButton){

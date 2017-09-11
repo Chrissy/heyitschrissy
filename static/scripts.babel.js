@@ -45638,6 +45638,20 @@ require('./_iter-define')(String, 'String', function (iterated) {
 },{}],63:[function(require,module,exports){
 module.exports=[
   {
+    "name": "whitney-reef",
+    "mask": "./static/fonts/a.png",
+    "innerTerrain": {
+      "name": "mount-whitney",
+      "zoom": 13,
+      "coordinates": [-118.2923, 36.5785]
+    },
+    "outerTerrain": {
+      "name": "capitol-reef",
+      "zoom": 13,
+      "coordinates": [-111.3555,38.3270]
+    }
+  },
+  {
     "name": "crater-whitney",
     "mask": "./static/fonts/q.png",
     "innerTerrain": {
@@ -45656,12 +45670,12 @@ module.exports=[
     "mask": "./static/fonts/a.png",
     "innerTerrain": {
       "name": "zion",
-      "zoom": 12,
+      "zoom": 13,
       "coordinates": [-113.0263, 37.2982]
     },
     "outerTerrain": {
       "name": "capitol-reef",
-      "zoom": 12,
+      "zoom": 13,
       "coordinates": [-111.3555,38.3270]
     }
   }
@@ -45690,18 +45704,33 @@ var _guide2 = _interopRequireDefault(_guide);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var initializeCanvas = function initializeCanvas(_ref) {
-  var canvas = _ref.canvas,
-      width = _ref.width,
-      height = _ref.height,
+var drawTerrain = function drawTerrain(_ref) {
+  var plane = _ref.plane,
       image = _ref.image,
       elevations = _ref.elevations;
+
+  plane.geometry.vertices.map(function (v, i) {
+    return (0, _assign2.default)(v, { z: elevations[i] / 100 });
+  });
+  plane.geometry.verticesNeedUpdate = true;
+  new _three.TextureLoader().load(image, function (img) {
+    plane.material.map = img;
+    plane.material.needsUpdate = true;
+  });
+};
+
+var initializeCanvas = function initializeCanvas(_ref2) {
+  var canvas = _ref2.canvas,
+      width = _ref2.width,
+      height = _ref2.height,
+      image = _ref2.image,
+      elevations = _ref2.elevations;
 
   var camera = new _three.PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   var scene = new _three.Scene({ autoUpdate: false });
   var geometry = new _three.PlaneGeometry(200, 200, width - 1, height - 1);
-  var material = new _three.MeshBasicMaterial({ map: image });
+  var material = new _three.MeshBasicMaterial();
   var plane = new _three.Mesh(geometry, material);
 
   var spinZ = function spinZ() {
@@ -45719,29 +45748,27 @@ var initializeCanvas = function initializeCanvas(_ref) {
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-  plane.geometry.vertices.map(function (v, i) {
-    return (0, _assign2.default)(v, { z: elevations[i] / 100 });
-  });
 
+  drawTerrain({ plane: plane, image: image, elevations: elevations });
   spinZ();
   scene.add(plane);
 
-  return canvas;
+  return { canvas: canvas, plane: plane };
 };
 
-var createTerrainSketch = function createTerrainSketch(canvas, url, cb) {
-  fetch(url).then(function (r) {
+var getSketch = function getSketch(name, cb) {
+  return fetch("/dist/" + name + ".json").then(function (r) {
     return r.json();
-  }).then(function (response) {
-    new _three.TextureLoader().load(response.image, function (image) {
-      var w = Math.sqrt(response.elevations.length);
-      cb(initializeCanvas({ canvas: canvas, elevations: response.elevations, width: w, height: w, image: image }));
-    });
   });
 };
 
-var requestImageSet = function requestImageSet(_ref2) {
-  var elementId = _ref2.elementId;
+var createTerrainSketch = function createTerrainSketch(canvas, response) {
+  var w = Math.sqrt(response.elevations.length);
+  return initializeCanvas({ canvas: canvas, elevations: response.elevations, width: w, height: w, image: response.image });
+};
+
+var requestImageSet = function requestImageSet(_ref3) {
+  var elementId = _ref3.elementId;
 
   var el = document.getElementById(elementId);
   Reqwest(el.getAttribute('src'), function (response) {
@@ -45757,21 +45784,30 @@ document.addEventListener("DOMContentLoaded", function () {
   if (_bowser2.default.msie) return;
   document.body.classList.remove("no-js");
 
-  var canvases = [document.getElementById("canvas1"), document.getElementById("canvas2")];
+  var sketches = [];
+  var canvas = document.getElementById("canvas1");
   var preloadImages = document.querySelectorAll('img.preload');
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
 
-  canvases.map(function (c) {
-    return c.addEventListener('click', function () {
-      canvases.map(function (c) {
-        return c.classList.toggle('next');
-      });
-    });
+  _guide2.default.slice(0, 2).forEach(function (s) {
+    var sketch = getSketch(s.name);
+    sketches.push(sketch);
   });
 
-  createTerrainSketch(canvas1, "/dist/" + _guide2.default[0].name + ".json", function () {
-    createTerrainSketch(canvas2, "/dist/" + _guide2.default[1].name + ".json", function () {});
+  sketches[0].then(function (response) {
+    var sketch = createTerrainSketch(canvas, response);
+
+    canvas.addEventListener('click', function () {
+      sketches[sketches.length - 1].then(function (response) {
+        if (_guide2.default[sketches.length]) {
+          sketches.push(getSketch(_guide2.default[sketches.length].name));
+        } else {
+          sketches = sketches.slice(0, 1);
+        };
+        drawTerrain({ plane: sketch.plane, image: response.image, elevations: response.elevations });
+      });
+    });
   });
 
   [].concat((0, _toConsumableArray3.default)(toggleButtons)).forEach(function (toggleButton) {

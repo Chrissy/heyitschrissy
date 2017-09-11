@@ -1,5 +1,19 @@
 [
   {
+    "name": "whitney-reef",
+    "mask": "./static/fonts/a.png",
+    "innerTerrain": {
+      "name": "mount-whitney",
+      "zoom": 13,
+      "coordinates": [-118.2923, 36.5785]
+    },
+    "outerTerrain": {
+      "name": "capitol-reef",
+      "zoom": 13,
+      "coordinates": [-111.3555,38.3270]
+    }
+  },
+  {
     "name": "crater-whitney",
     "mask": "./static/fonts/q.png",
     "innerTerrain": {
@@ -18,12 +32,12 @@
     "mask": "./static/fonts/a.png",
     "innerTerrain": {
       "name": "zion",
-      "zoom": 12,
+      "zoom": 13,
       "coordinates": [-113.0263, 37.2982]
     },
     "outerTerrain": {
       "name": "capitol-reef",
-      "zoom": 12,
+      "zoom": 13,
       "coordinates": [-111.3555,38.3270]
     }
   }
