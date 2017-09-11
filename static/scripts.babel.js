@@ -45424,10 +45424,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.body.classList.add('animating');
 
-      setTimeout(function () {
+      document.body.addEventListener("transitionend", function () {
         document.body.classList.remove('animating');
-        requestImageSet({ elementId: "image-set-1" });
-      }, 500);
+        document.body.removeEventListener("transitionend");
+      });
     });
   });
 });

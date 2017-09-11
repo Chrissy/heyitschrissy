@@ -91,10 +91,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
       document.body.classList.add('animating');
 
-      setTimeout(() => {
+      document.body.addEventListener("transitionend", () => {
         document.body.classList.remove('animating');
-        requestImageSet({elementId: "image-set-1"});
-      }, 500);
+        document.body.removeEventListener("transitionend");
+      });
     });
   });
 });
