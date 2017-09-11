@@ -31,11 +31,11 @@ const placeToMapboxStaticApiUrl = ({coordinates, zoom}) => {
   return `http://api.mapbox.com/v4/mapbox.satellite/${coordinates.join(",")},${zoom}/1024x1024.jpg70?access_token=pk.eyJ1IjoiZml2ZWZvdXJ0aHMiLCJhIjoiY2lvMXM5MG45MWFhenUybTNkYzB1bzJ0MiJ9._5Rx_YN9mGwR8dwEB9D2mg`
 }
 
-const compositeEarthImages = (place1, place2) => {
+const compositeEarthImages = (place1, place2, compositeImage) => {
   jimp.read(placeToMapboxStaticApiUrl({...place2}), (err, image2) => {
-    jimp.read('./static/fonts/q.jpg', (err, letter) => {
-      image2.mask(letter, 0, 0);
+    jimp.read(compositeImage, (err, letter) => {
       jimp.read(placeToMapboxStaticApiUrl({...place1}), (err, image1) => {
+        image2.mask(letter, 0, 0);
         image1.composite(image2, 0, 0).write(`./static/data/${place1.name}-${place2.name}.jpg`)
       });
     });
@@ -45,6 +45,6 @@ const compositeEarthImages = (place1, place2) => {
 // writeElevations({...guide.find(p => p.name == 'crater-lake')});
 // writeElevations({...guide.find(p => p.name == 'capitol-reef')})
 
-compositeEarthImages({...guide.find(p => p.name == 'crater-lake')}, {...guide.find(p => p.name == 'capitol-reef')});
+compositeEarthImages({...guide.find(p => p.name == 'crater-lake')}, {...guide.find(p => p.name == 'capitol-reef')}, './static/fonts/q.jpg');
 
 pool.end();
