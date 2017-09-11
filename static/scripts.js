@@ -44,9 +44,9 @@ const initializeCanvas = ({width, height, image, elevations}) => {
 const loader = new TextureLoader();
 
 Reqwest("/data/crater-lake-capitol-reef.json", (response) => {
-  loader.load("/data/crater-lake-capitol-reef.jpg", (image) => {
-    const w = Math.sqrt(response.length);
-    initializeCanvas({elevations: response, width: w, height: w, image});
+  loader.load(response.image, (image) => {
+    const w = Math.sqrt(response.elevations.length);
+    initializeCanvas({elevations: response.elevations, width: w, height: w, image});
   });
 });
 
