@@ -46315,22 +46315,13 @@ var initializeCanvas = function initializeCanvas(_ref) {
   var plane = new _three.Mesh(geometry, material);
 
   plane.geometry.vertices.map(function (v, i) {
-    return (0, _assign2.default)(v, { z: elevations[i] / 200 });
+    return (0, _assign2.default)(v, { z: elevations[i] / 100 });
   });
 
   plane.rotation.x = 5.6;
-  plane.rotation.z = 1.75;
+  plane.rotation.z = 3.75;
 
-  var lights = [];
-  lights[0] = new _three.PointLight(0xffffff, 0.75, 0);
-  lights[1] = new _three.PointLight(0xffffff, 0.75, 0);
-
-  lights[0].position.set(50, 10, 55);
-  lights[1].position.set(-50, -20, 55);
-
-  scene.add(lights[0]);
-  scene.add(lights[1]);
-  var light = new _three.AmbientLight(0xffffff, 0.33);
+  var light = new _three.AmbientLight(0xffffff, 1);
   scene.add(light);
   scene.add(plane);
   renderer.render(scene, camera);
@@ -46338,7 +46329,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
 var loader = new _three.TextureLoader();
 
-(0, _reqwest2.default)("/data/crater-lake-capitol-reef.json", function (response) {
+(0, _reqwest2.default)("/data/crater-lake-mount-whitney.json", function (response) {
   loader.load(response.image, function (image) {
     var w = Math.sqrt(response.elevations.length);
     initializeCanvas({ elevations: response.elevations, width: w, height: w, image: image });

@@ -20,22 +20,13 @@ const initializeCanvas = ({width, height, image, elevations}) => {
   const plane = new Mesh(geometry, material);
 
   plane.geometry.vertices.map((v, i) => {
-    return Object.assign(v, { z: elevations[i] / 200 })
+    return Object.assign(v, { z: elevations[i] / 100 })
   });
 
   plane.rotation.x = 5.6;
-  plane.rotation.z = 1.75;
+  plane.rotation.z = 3.75;
 
-  var lights = [];
-	lights[0] = new PointLight( 0xffffff, 0.75, 0 );
-	lights[1] = new PointLight( 0xffffff, 0.75, 0 );
-
-	lights[0].position.set( 50, 10, 55 );
-	lights[1].position.set( -50, -20, 55 );
-
-	scene.add( lights[ 0 ] );
-	scene.add( lights[ 1 ] );
-  const light = new AmbientLight(0xffffff, 0.33);
+  const light = new AmbientLight(0xffffff, 1);
   scene.add(light)
   scene.add(plane);
   renderer.render(scene, camera);
@@ -43,7 +34,7 @@ const initializeCanvas = ({width, height, image, elevations}) => {
 
 const loader = new TextureLoader();
 
-Reqwest("/data/crater-lake-capitol-reef.json", (response) => {
+Reqwest("/data/crater-lake-mount-whitney.json", (response) => {
   loader.load(response.image, (image) => {
     const w = Math.sqrt(response.elevations.length);
     initializeCanvas({elevations: response.elevations, width: w, height: w, image});

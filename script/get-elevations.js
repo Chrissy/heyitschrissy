@@ -48,7 +48,7 @@ const combineElevations = (place1, place2, compositeImage, cb) => {
       const sliced2 = elevations2.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
       jimp.read(compositeImage, (err, letterImage) => {
         const pixelMap = scanImage(letterImage.resize(width, width));
-        const mappedElevations = sliced1.map((s, i) => (pixelMap[i] == 0) ? sliced2[i] : sliced1[i]);
+        const mappedElevations = sliced1.map((s, i) => (pixelMap[i] == 0) ? sliced1[i] : sliced2[i]);
         cb(mappedElevations);
       });
     });
@@ -79,8 +79,8 @@ const createTerrainBundle = (place1, place2, compositeImage) => {
 
 
 createTerrainBundle(
-  guide.find(p => p.name == 'crater-lake'),
   guide.find(p => p.name == 'capitol-reef'),
+  guide.find(p => p.name == 'mount-whitney'),
   './static/fonts/q.jpg',
   () => pool.end()
 );
