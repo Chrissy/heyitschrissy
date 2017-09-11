@@ -12,6 +12,13 @@
   width: 100%;
   height: 100%;
   background: #e3f7ff;
+  transition: 1s opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canvas.next {
+  opacity: 0;
+  z-index: -1;
 }
 
 html, body, div {

@@ -2,8 +2,7 @@ import Bowser from 'bowser';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
 import guide from '../script/guide.json';
 
-const initializeCanvas = ({width, height, image, elevations}) => {
-  const canvas = document.getElementById('canvas');
+const initializeCanvas = ({canvas, width, height, image, elevations}) => {
   const camera = new PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});
@@ -29,12 +28,11 @@ const initializeCanvas = ({width, height, image, elevations}) => {
   return canvas;
 }
 
-const createTerrainSketch = (url, cb) => {
+const createTerrainSketch = (canvas, url, cb) => {
   fetch(url).then(r => r.json()).then((response) => {
     new TextureLoader().load(response.image, (image) => {
       const w = Math.sqrt(response.elevations.length);
-      initializeCanvas({elevations: response.elevations, width: w, height: w, image});
-      cb();
+      cb(initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image}));
     });
   });
 }
@@ -54,11 +52,19 @@ document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
-  createTerrainSketch("/dist/" + guide[0].name + ".json", ()=>{});
+  const canvas1 = document.getElementById("canvas1");
+  const canvas2 = document.getElementById("canvas2");
+  [canvas1, canvas2].map(c => c.addEventListener('click', () => {
+    [canvas1, canvas2].map(c => c.classList.toggle('next'));
+  }))
 
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('.toggle-button');
   const slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  createTerrainSketch(canvas1, "/dist/" + guide[0].name + ".json", () => {
+    createTerrainSketch(canvas2, "/dist/" + guide[1].name + ".json", () => {});
+  });
 
   [...toggleButtons].forEach(function(toggleButton){
     toggleButton.addEventListener('click', function(){

@@ -45691,12 +45691,12 @@ var _guide2 = _interopRequireDefault(_guide);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initializeCanvas = function initializeCanvas(_ref) {
-  var width = _ref.width,
+  var canvas = _ref.canvas,
+      width = _ref.width,
       height = _ref.height,
       image = _ref.image,
       elevations = _ref.elevations;
 
-  var canvas = document.getElementById('canvas');
   var camera = new _three.PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
   var scene = new _three.Scene({ autoUpdate: false });
@@ -45729,14 +45729,13 @@ var initializeCanvas = function initializeCanvas(_ref) {
   return canvas;
 };
 
-var createTerrainSketch = function createTerrainSketch(url, cb) {
+var createTerrainSketch = function createTerrainSketch(canvas, url, cb) {
   fetch(url).then(function (r) {
     return r.json();
   }).then(function (response) {
     new _three.TextureLoader().load(response.image, function (image) {
       var w = Math.sqrt(response.elevations.length);
-      initializeCanvas({ elevations: response.elevations, width: w, height: w, image: image });
-      cb();
+      cb(initializeCanvas({ canvas: canvas, elevations: response.elevations, width: w, height: w, image: image }));
     });
   });
 };
@@ -45758,11 +45757,23 @@ document.addEventListener("DOMContentLoaded", function () {
   if (_bowser2.default.msie) return;
   document.body.classList.remove("no-js");
 
-  createTerrainSketch("/dist/" + _guide2.default[0].name + ".json", function () {});
+  var canvas1 = document.getElementById("canvas1");
+  var canvas2 = document.getElementById("canvas2");
+  [canvas1, canvas2].map(function (c) {
+    return c.addEventListener('click', function () {
+      [canvas1, canvas2].map(function (c) {
+        return c.classList.toggle('next');
+      });
+    });
+  });
 
   var preloadImages = document.querySelectorAll('img.preload');
   var toggleButtons = document.querySelectorAll('.toggle-button');
   var slidingSections = document.querySelectorAll('.sliding-site-section');
+
+  createTerrainSketch(canvas1, "/dist/" + _guide2.default[0].name + ".json", function () {
+    createTerrainSketch(canvas2, "/dist/" + _guide2.default[1].name + ".json", function () {});
+  });
 
   [].concat((0, _toConsumableArray3.default)(toggleButtons)).forEach(function (toggleButton) {
     toggleButton.addEventListener('click', function () {
