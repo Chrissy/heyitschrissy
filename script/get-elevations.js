@@ -30,7 +30,7 @@ const antiAliasNulls = (evs) => {
 const getElevations = ({zoom, coordinates}, cb) => {
   const envelope = bounds(coordinates, zoom, [800, 800]);
   const sql = `SELECT to_json(ST_DumpValues(
-    ST_Resize(ST_SnapToGrid(ST_Clip(ST_Union(rast), ST_MakeEnvelope(${envelope.join(",")}, 4326)), 1, 1), 100, 100)
+    ST_Resize(ST_Clip(ST_Union(rast), ST_MakeEnvelope(${envelope.join(",")}, 4326)), 100, 100)
   )) AS rast FROM elevations
   WHERE ST_Intersects(rast,
     ST_MakeEnvelope(${envelope.join(",")}, 4326)
