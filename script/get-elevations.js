@@ -13,7 +13,15 @@ const query = (query, cb) => {
   });
 }
 
-const writeElevations = ({name, zoom, coordinates}) => {
+const scanImage = (i) => {
+  let onOffMap = [];
+  i.scan(0, 0, i.bitmap.width, i.bitmap.height, function(x, y, idx) {
+    onOffMap.push(this.bitmap.data[ idx + 0 ]);
+  });
+  return onOffMap;
+}
+
+const getElevations = ({name, zoom, coordinates}, cb) => {
   const envelope = bounds(coordinates, zoom, [800, 800]);
   const sql = `SELECT to_json(ST_DumpValues(
     ST_Clip(ST_Union(rast), ST_MakeEnvelope(${envelope.join(",")}, 4326))
@@ -23,8 +31,25 @@ const writeElevations = ({name, zoom, coordinates}) => {
   );`
 
   query(sql, ({rows: [result]}) => {
-    fs.writeFileSync(`./static/data/${name}.json`, JSON.stringify(result.rast.valarray.map(r => r.slice(0, result.rast.valarray.length))));
+    cb(result.rast.valarray)
   })
+}
+
+const combineElevations = (place1, place2, compositeImage, cb) => {
+  getElevations(place1, (elevations1) => {
+    getElevations(place2, (elevations2) => {
+      console.log(elevations1.length, elevations2.length);
+      const width = Math.min(elevations1.length, elevations2.length);
+      const sliced1 = elevations1.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
+      const sliced2 = elevations2.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
+      jimp.read(compositeImage, (err, letterImage) => {
+        const pixelMap = scanImage(letterImage.resize(width, width));
+        const mappedElevations = sliced1.map((s, i) => (pixelMap[i] == 0) ? sliced2[i] : sliced1[i]);
+        fs.writeFileSync(`./static/data/${place1.name}-${place2.name}.json`, JSON.stringify(mappedElevations));
+        cb();
+      });
+    });
+  });
 }
 
 const placeToMapboxStaticApiUrl = ({coordinates, zoom}) => {
@@ -42,9 +67,10 @@ const compositeEarthImages = (place1, place2, compositeImage) => {
   });
 };
 
-// writeElevations({...guide.find(p => p.name == 'crater-lake')});
-// writeElevations({...guide.find(p => p.name == 'capitol-reef')})
 
-compositeEarthImages({...guide.find(p => p.name == 'crater-lake')}, {...guide.find(p => p.name == 'capitol-reef')}, './static/fonts/q.jpg');
-
-pool.end();
+combineElevations(
+  guide.find(p => p.name == 'crater-lake'),
+  guide.find(p => p.name == 'capitol-reef'),
+  './static/fonts/q.jpg',
+  () => pool.end()
+);

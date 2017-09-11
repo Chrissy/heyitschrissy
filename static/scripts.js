@@ -1,15 +1,12 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
-import GetPixels from 'get-pixels';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, AmbientLight, PointLightHelper, TextureLoader} from 'three';
 
-const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, elevations, elevations2}) => {
+const initializeCanvas = ({width, height, image, elevations}) => {
   const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
   const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
-  const oneDimensionalData = data.filter((d,i) => i % 4 == 0);
   const camera = new PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
-  const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
   camera.position.y = 0;
   camera.position.x = 0;
   camera.position.z = 400;
@@ -18,12 +15,12 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
+  const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
   const material = new MeshPhongMaterial({map: image});
   const plane = new Mesh(geometry, material);
 
-  plane.geometry.vertices.map((v,i) => {
-    const add = (oneDimensionalData[i] == 0) ? elevations[i] - 1000: elevations[i];
-    return Object.assign(v, { z: add / 200 })
+  plane.geometry.vertices.map((v, i) => {
+    return Object.assign(v, { z: elevations[i] / 200 })
   });
 
   plane.rotation.x = 5.6;
@@ -46,18 +43,12 @@ const initializeCanvas = ({data, width, height, image, imageWidth, imageHeight, 
 
 const loader = new TextureLoader();
 
-GetPixels("fonts/q.png", (err, data) => {
-  Reqwest("/data/capitol-reef.json", (response) => {
-    Reqwest("/data/crater-lake.json", (response2) => {
-      loader.load("/data/capitol-crater.png", (image) => {
-        const w = Math.min(response[0].length, response2[0].length);
-        const sliced1 = response.map(p => p.slice(0, w)).slice(0, w);
-        const sliced2 = response2.map(p => p.slice(0, w)).slice(0, w);
-        initializeCanvas({data: data.data, width: w, height: w, image, imageWidth: data.shape[0], imageHeight: data.shape[1], elevations: sliced1.reduce((a,r) => [...a, ...r]), elevations2: sliced2.reduce((a,r) => [...a, ...r])});
-      });
-    });
+Reqwest("/data/crater-lake-capitol-reef.json", (response) => {
+  loader.load("/data/crater-lake-capitol-reef.jpg", (image) => {
+    const w = Math.sqrt(response.length);
+    initializeCanvas({elevations: response, width: w, height: w, image});
   });
-})
+});
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
