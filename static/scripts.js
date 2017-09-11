@@ -1,6 +1,6 @@
 import Bowser from 'bowser';
-import Reqwest from 'reqwest';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
+import guide from '../script/guide.json';
 
 const initializeCanvas = ({width, height, image, elevations}) => {
   const canvas = document.getElementById('canvas');
@@ -25,14 +25,19 @@ const initializeCanvas = ({width, height, image, elevations}) => {
 
   spinZ()
   scene.add(plane);
+
+  return canvas;
 }
 
-Reqwest("/dist/crater-whitney.json", (response) => {
-  new TextureLoader().load(response.image, (image) => {
-    const w = Math.sqrt(response.elevations.length);
-    initializeCanvas({elevations: response.elevations, width: w, height: w, image});
+const createTerrainSketch = (url, cb) => {
+  fetch(url).then(r => r.json()).then((response) => {
+    new TextureLoader().load(response.image, (image) => {
+      const w = Math.sqrt(response.elevations.length);
+      initializeCanvas({elevations: response.elevations, width: w, height: w, image});
+      cb();
+    });
   });
-});
+}
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
@@ -48,6 +53,8 @@ const requestImageSet = ({elementId}) => {
 document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
+
+  createTerrainSketch("/dist/" + guide[0].name + ".json", ()=>{});
 
   const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('.toggle-button');
