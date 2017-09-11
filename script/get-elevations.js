@@ -39,10 +39,9 @@ const placeToMapboxStaticApiUrl = ({coordinates, zoom}) => {
   return `http://api.mapbox.com/v4/mapbox.satellite/${coordinates.join(",")},${zoom}/1024x1024.jpg70?access_token=pk.eyJ1IjoiZml2ZWZvdXJ0aHMiLCJhIjoiY2lvMXM5MG45MWFhenUybTNkYzB1bzJ0MiJ9._5Rx_YN9mGwR8dwEB9D2mg`
 }
 
-const combineElevations = (place1, place2, compositeImage, cb) => {
+const compositeElevations = (place1, place2, compositeImage, cb) => {
   getElevations(place1, (elevations1) => {
     getElevations(place2, (elevations2) => {
-      console.log(elevations1.length, elevations2.length);
       const width = Math.min(elevations1.length, elevations2.length);
       const sliced1 = elevations1.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
       const sliced2 = elevations2.map(p => p.slice(0, width)).slice(0, width).reduce((a,r) => [...a, ...r]);
@@ -55,7 +54,7 @@ const combineElevations = (place1, place2, compositeImage, cb) => {
   });
 }
 
-const compositeEarthImages = (place1, place2, compositeImage, cb) => {
+const compositeTerrain = (place1, place2, compositeImage, cb) => {
   jimp.read(placeToMapboxStaticApiUrl({...place2}), (err, image2) => {
     jimp.read(compositeImage, (err, letter) => {
       jimp.read(placeToMapboxStaticApiUrl({...place1}), (err, image1) => {
@@ -66,21 +65,20 @@ const compositeEarthImages = (place1, place2, compositeImage, cb) => {
   });
 };
 
-const createTerrainBundle = (place1, place2, compositeImage) => {
-  combineElevations(place1, place2, compositeImage, (mappedElevations) => {
-    compositeEarthImages(place1, place2, compositeImage, (newImage) => {
+const createTerrainBundle = ({innerTerrain, outerTerrain, name, mask, cb}) => {
+  compositeElevations(innerTerrain, outerTerrain, mask, (mappedElevations) => {
+    compositeTerrain(innerTerrain, outerTerrain, mask, (newImage) => {
       newImage.getBase64(jimp.MIME_JPEG, (err, base64Image) => {
         const json = JSON.stringify({elevations: mappedElevations, image: base64Image})
-        fs.writeFileSync(`./static/data/${place1.name}-${place2.name}.json`, json);
+        fs.writeFileSync(`./static/data/${name}.json`, json);
+        cb();
       })
     })
   })
 }
 
-
-createTerrainBundle(
-  guide.find(p => p.name == 'capitol-reef'),
-  guide.find(p => p.name == 'mount-whitney'),
-  './static/fonts/q.jpg',
-  () => pool.end()
-);
+guide.forEach((t, i) => {
+  createTerrainBundle({...t, cb: () => {
+    if (i == guide.length - 1) pool.end()
+  }});
+});
