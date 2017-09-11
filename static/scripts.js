@@ -1,14 +1,11 @@
 import Bowser from 'bowser';
 import Reqwest from 'reqwest';
-import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, PointLight, AmbientLight, PointLightHelper, TextureLoader} from 'three';
+import {WebGLRenderer, Scene, PerspectiveCamera, MeshPhongMaterial, Mesh, PlaneGeometry, AmbientLight, TextureLoader} from 'three';
 
 const initializeCanvas = ({width, height, image, elevations}) => {
   const scene = new Scene({autoUpdate: false});
   const canvas = document.getElementById('canvas');
-  const aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
-  const camera = new PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
-  camera.position.y = 0;
-  camera.position.x = 0;
+  const camera = new PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   camera.position.z = 400;
 
   const renderer = new WebGLRenderer({canvas, alpha: true});

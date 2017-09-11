@@ -46300,10 +46300,7 @@ var initializeCanvas = function initializeCanvas(_ref) {
 
   var scene = new _three.Scene({ autoUpdate: false });
   var canvas = document.getElementById('canvas');
-  var aspectRatio = canvas.offsetWidth / canvas.offsetHeight;
-  var camera = new _three.PerspectiveCamera(62 / aspectRatio, aspectRatio, 0.1, 1000);
-  camera.position.y = 0;
-  camera.position.x = 0;
+  var camera = new _three.PerspectiveCamera(62, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
   camera.position.z = 400;
 
   var renderer = new _three.WebGLRenderer({ canvas: canvas, alpha: true });
