@@ -6,6 +6,7 @@ import shuffle from 'array-shuffle';
 const drawTerrain = ({mesh, image, elevations}) => {
   mesh.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
   mesh.geometry.verticesNeedUpdate = true;
+  
   new TextureLoader().load(image, (img) => {
     mesh.material.map = img;
     mesh.material.needsUpdate = true;
