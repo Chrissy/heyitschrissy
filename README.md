@@ -3,7 +3,7 @@
 # heyitsme
 My personal site
 
-I build the terrain composites in Node using PostGIS, Jimp, and the Mapbox static api. I request them on the frontend and build it with three. You can see the code at:
+I build the terrain composites in Node using PostGIS, Jimp, and the Mapbox static api. I request them on the frontend and render it with three. You can see the code at:
 
 • `static/app.js` (no frameworks, tried to keep this as simple and tidy as possible)
 • `builders/terrain-sketches.js` (a little sloppy but it works!)
