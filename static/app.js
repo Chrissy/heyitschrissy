@@ -62,29 +62,20 @@ document.addEventListener("DOMContentLoaded", function() {
   const sketchTitle = document.getElementById('sketch-title');
   const mesh = initializeMesh(canvas);
 
-  const showNextSketch = (mesh) => {
-    sketches[sketches.length - 1].then((response) => {
-      if (guide[sketches.length]) {
-        sketches.push(getSketch(guide[sketches.length].name));
-      } else {
-        sketches = sketches.slice(0, 1)
-      }
-      drawTerrain({mesh, image: response.image, elevations: response.elevations});
-      sketchTitle.innerText = guide[sketches.length - 1].humanName;
+  let sketchStore = [getSketch(guide[0].name)];
+  let counter = 0;
+
+  const showSketch = () => {
+    sketchStore[counter % guide.length].then((response) => {
+      drawTerrain({mesh, ...response});
+      sketchTitle.innerText = guide[counter % guide.length].humanName;
+      counter++;
+      if (guide[counter]) sketchStore = [...sketchStore, getSketch(guide[counter].name)];
     });
   }
 
-  const initializeSketchControls = (renderer) => {
-    sketchTitle.innerText = guide[0].humanName;
-    [canvas, control].forEach(c => c.addEventListener('click', () => showNextSketch(mesh)));
-  }
-
-  let sketches = guide.slice(0,2).map(s => getSketch(s.name));
-
-  sketches[0].then((response) => {
-    initializeSketchControls(mesh);
-    drawTerrain({mesh, image: response.image, elevations: response.elevations});
-  });
+  [canvas, control].forEach(c => c.addEventListener('click', showSketch));
+  showSketch()
 
   if (toggleButtons) toggleButtons.forEach((toggleButton) => {
     toggleButton.addEventListener('click', function(){
