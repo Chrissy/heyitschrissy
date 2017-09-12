@@ -9,7 +9,7 @@
     "dev": "webpack --watch & node server.js",
     "heroku-postbuild": "./node_modules/.bin/webpack --config webpack.config.js -p && node builders/upload-bundle.js",
     "minify": "node builders/minify-images.js",
-    "elevations": "node builders/terrain-sketches.js"
+    "sketches": "node builders/terrain-sketches.js"
   },
   "license": "ISC",
   "dependencies": {

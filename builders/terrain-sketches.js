@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const jimp = require('jimp');
 const fetch = require('node-fetch');
-const {bounds} = require('geo-viewport');
+const {bounds} = require('@mapbox/geo-viewport');
 const pool = new Pool({host: "localhost", database: "elevations_detailed"});
 const guide = JSON.parse(fs.readFileSync("./sketches.json"));
 
@@ -65,7 +65,7 @@ const compositeTerrain = (place1, place2, compositeImage, cb) => {
     jimp.read(compositeImage, (err, letter) => {
       jimp.read(placeToMapboxStaticApiUrl({...place1}), (err, image1) => {
         image2.mask(letter, 0, 0);
-        cb(image1.composite(image2, 0, 0));
+        cb(image1.composite(image2, 0, 0).quality(25));
       });
     });
   });
