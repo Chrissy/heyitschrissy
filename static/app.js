@@ -41,7 +41,7 @@ const initializeMesh = (canvas) => {
 }
 
 const getSketch = (name, cb) => {
-  return fetch("/dist/" + name + ".json").then(r => r.json());
+  return fetch("https://s3-us-west-2.amazonaws.com/chrissy-portfolio-images/" + name + ".json").then(r => r.json());
 };
 
 const requestImageSet = ({elementId}) => {
