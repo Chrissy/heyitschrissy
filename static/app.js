@@ -1,4 +1,3 @@
-import Bowser from 'bowser';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
 import guideJson from '../sketches.json';
 import shuffle from 'array-shuffle';
@@ -70,7 +69,6 @@ const handleToggleButtonClick = (toggleButton) => {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
   const guide = shuffle(guideJson);
@@ -78,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const control = document.getElementById("canvas-control")
   const toggleButtons = document.querySelectorAll('[show],[hide]');
   const sketchTitle = document.getElementById('sketch-title');
-  const mesh = initializeMesh(canvas);
 
   let sketchStore = [getSketch(guide[0].name)];
   let counter = 0;
@@ -92,10 +89,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  [canvas, control].forEach(c => c.addEventListener('click', showSketch));
-  showSketch()
-
-  if (toggleButtons) toggleButtons.forEach((toggleButton) => {
+  if (toggleButtons) [...toggleButtons].forEach((toggleButton) => {
     toggleButton.addEventListener('click', () => handleToggleButtonClick(toggleButton));
   });
+
+  const mesh = initializeMesh(canvas);
+  [canvas, control].forEach(c => c.addEventListener('click', showSketch));
+  showSketch()
 });
