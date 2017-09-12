@@ -3,8 +3,6 @@ import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneG
 import guideJson from '../script/guide.json';
 import shuffle from 'array-shuffle';
 
-const guide = shuffle(guideJson);
-
 const drawTerrain = ({plane, image, elevations}) => {
   plane.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
   plane.geometry.verticesNeedUpdate = true;
@@ -64,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.body.classList.remove("no-js");
 
   let sketches = [];
+  const guide = shuffle(guideJson);
   const canvas = document.getElementById("canvas");
   const control = document.getElementById("canvas-control")
   const preloadImages = document.querySelectorAll('img.preload');

@@ -45335,8 +45335,6 @@ var _arrayShuffle2 = _interopRequireDefault(_arrayShuffle);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var guide = (0, _arrayShuffle2.default)(_guide2.default);
-
 var drawTerrain = function drawTerrain(_ref) {
   var plane = _ref.plane,
       image = _ref.image,
@@ -45421,6 +45419,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.classList.remove("no-js");
 
   var sketches = [];
+  var guide = (0, _arrayShuffle2.default)(_guide2.default);
   var canvas = document.getElementById("canvas");
   var control = document.getElementById("canvas-control");
   var preloadImages = document.querySelectorAll('img.preload');
