@@ -9,6 +9,6 @@ I build the terrain composites in Node using PostGIS, Jimp, and the Mapbox stati
 * `builders/terrain-sketches.js` (a little sloppy but it works!)
 * `sketches.json` this is the source of truth for both the builder and the front end
 
-Unless you have experience with PostGIS and know how to make an elevation raster db, I wouldn't try to run the builder. Eventually I'll switch from postgis to a heightmap raster service, and then you should be able to build your own typography terrain. In the meantime, the front end should run fine.
+Unless you have experience with PostGIS and know how to make an elevation raster db, I wouldn't try to run the builder. Eventually I'll switch from PostGIS to a heightmap raster service, and then you should be able to build your own typography terrain. In the meantime, the front end should run fine.
 
 All of my portfolio images are stored on S3, but I also commit them here to serve as an archive. They are located at `static/images`. Feel free to use anything, just make sure to link back.
