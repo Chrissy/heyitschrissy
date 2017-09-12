@@ -12,20 +12,21 @@ const drawTerrain = ({plane, image, elevations}) => {
   });
 }
 
-const initializeCanvas = ({canvas, width, height, image, elevations}) => {
+const initializeRenderer = ({canvas, image, elevations}) => {
+  const width = Math.sqrt(elevations.length);
   const size = Math.min(Math.max(canvas.offsetWidth, 550), 700);
   const camera = new PerspectiveCamera(42, 1, 0.1, 1000);
   const renderer = new WebGLRenderer({canvas, alpha: true});
   const scene = new Scene({autoUpdate: false});
-  const geometry = new PlaneGeometry(200, 200, width - 1, height - 1);
+  const geometry = new PlaneGeometry(200, 200, width - 1, width - 1);
   const material = new MeshBasicMaterial();
   const plane = new Mesh(geometry, material);
 
-  const spinZ = (z = 3.75, x = 5.6) => {
+  const animate = (z = 3.75, x = 5.6) => {
     plane.rotation.z = z;
     plane.rotation.x = x;
     renderer.render(scene, camera);
-    window.requestAnimationFrame(() => spinZ(z + 0.0005, x + 0.00005));
+    window.requestAnimationFrame(() => animate(z + 0.0005, x + 0.00005));
   }
 
   camera.position.z = 400;
@@ -33,7 +34,7 @@ const initializeCanvas = ({canvas, width, height, image, elevations}) => {
   renderer.setSize(size, size);
 
   drawTerrain({plane, image, elevations});
-  spinZ()
+  animate()
   scene.add(plane);
 
   return {canvas, plane};
@@ -52,45 +53,38 @@ const requestImageSet = ({elementId}) => {
   if (potentialNextSet) requestImageSet({elementId: potentialNextSet});
 }
 
-const createTerrainSketch = (canvas, response) => {
-  const w = Math.sqrt(response.elevations.length);
-  return initializeCanvas({canvas, elevations: response.elevations, width: w, height: w, image: response.image});
-};
-
 document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
 
-  let sketches = [];
   const guide = shuffle(guideJson);
   const canvas = document.getElementById("canvas");
   const control = document.getElementById("canvas-control")
-  const preloadImages = document.querySelectorAll('img.preload');
   const toggleButtons = document.querySelectorAll('[show],[hide]');
-  const slidingSections = document.querySelectorAll('.sliding-site-section');
   const sketchTitle = document.getElementById('sketch-title');
 
-  const initializeSketchControls = (sketch) => {
-    sketchTitle.innerText = guide[0].humanName;
-    [canvas, control].forEach(c => c.addEventListener('click', () => {
-      sketches[sketches.length - 1].then((response) => {
-        if (guide[sketches.length]) {
-          sketches.push(getSketch(guide[sketches.length].name))
-        } else { sketches = sketches.slice(0, 1) };
-        drawTerrain({plane: sketch.plane, image: response.image, elevations: response.elevations});
-        sketchTitle.innerText = guide[sketches.length - 1].humanName;
-      });
-    }));
+  const showNextSketch = (renderer) => {
+    sketches[sketches.length - 1].then((response) => {
+      if (guide[sketches.length]) {
+        sketches.push(getSketch(guide[sketches.length].name));
+      } else {
+        sketches = sketches.slice(0, 1)
+      }
+      drawTerrain({plane: renderer.plane, image: response.image, elevations: response.elevations});
+      sketchTitle.innerText = guide[sketches.length - 1].humanName;
+    });
   }
 
-  guide.slice(0,2).forEach(s => {
-    const sketch = getSketch(s.name);
-    sketches.push(sketch)
-  });
+  const initializeSketchControls = (renderer) => {
+    sketchTitle.innerText = guide[0].humanName;
+    [canvas, control].forEach(c => c.addEventListener('click', () => showNextSketch(renderer)));
+  }
+
+  let sketches = guide.slice(0,2).map(s => getSketch(s.name));
 
   sketches[0].then((response) => {
-    const sketch = createTerrainSketch(canvas, response);
-    initializeSketchControls(sketch);
+    const renderer = initializeRenderer({canvas, image: response.image, elevations: response.elevations});
+    initializeSketchControls(renderer);
   });
 
   if (toggleButtons) toggleButtons.forEach((toggleButton) => {
