@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "webpack --watch & node server.js",
-    "heroku-postbuild": "webpack --optimize-minimize && node builders/upload-bundle.js",
+    "heroku-postbuild": "./node_modules/.bin/webpack --config webpack.config.js -p && node builders/upload-bundle.js",
     "minify": "node builders/minify-images.js",
     "elevations": "node builders/terrain-sketches.js"
   },
