@@ -1,7 +1,7 @@
 [
   {
     "name": "whitney-reef",
-    "mask": "./static/fonts/a.png",
+    "mask": "./static/fonts/a.jpg",
     "humanName": "Mt. Whitney & Capitol Reef",
     "innerTerrain": {
       "name": "mount-whitney",
@@ -17,7 +17,7 @@
   {
     "name": "crater-whitney",
     "humanName": "Mt. Whitney & Crater Lake",
-    "mask": "./static/fonts/q.png",
+    "mask": "./static/fonts/q.jpg",
     "innerTerrain": {
       "name": "crater-lake",
       "zoom": 13,
@@ -30,18 +30,123 @@
     }
   },
   {
-    "name": "zion-capitol-reef",
-    "humanName": "Capitol Reef & Zion National Park",
-    "mask": "./static/fonts/a.png",
+    "name": "isle-royale-big-bend",
+    "humanName": "Isle Royale & Big Bend National Park",
+    "mask": "./static/fonts/q2.jpg",
     "innerTerrain": {
-      "name": "zion",
+      "name": "isle-royale",
       "zoom": 13,
-      "coordinates": [-113.0263, 37.2982]
+      "coordinates": [-88.9093, 47.9959]
     },
     "outerTerrain": {
-      "name": "capitol-reef",
+      "name": "Big Bend",
       "zoom": 13,
-      "coordinates": [-111.3555,38.3270]
+      "coordinates": [-103.284,29.27]
+    }
+  },
+  {
+    "name": "mount-hood",
+    "humanName": "Mount Hood & High Uintas",
+    "mask": "./static/fonts/o.jpg",
+    "outerTerrain": {
+      "name": "mount-hood",
+      "zoom": 13,
+      "coordinates": [-121.6960,45.3736]
+    },
+    "innerTerrain": {
+      "name": "High Uintas",
+      "zoom": 13,
+      "coordinates": [-110.396765,40.760163]
+    }
+  },
+  {
+    "name": "salmon-everglades",
+    "humanName": "The Salmon River & Florida Everglades",
+    "mask": "./static/fonts/g.jpg",
+    "outerTerrain": {
+      "name": "salmon-river",
+      "zoom": 13,
+      "coordinates": [-114.869730,45.418880]
+    },
+    "innerTerrain": {
+      "name": "florida-everglades",
+      "zoom": 13,
+      "coordinates": [-81.0550,25.199]
+    }
+  },
+  {
+    "name": "acadia-canyonlands",
+    "humanName": "Acadia and Canyonlands National Parks",
+    "mask": "./static/fonts/x.jpg",
+    "innerTerrain": {
+      "name": "acadia",
+      "zoom": 13,
+      "coordinates": [-68.266599,44.349073]
+    },
+    "outerTerrain": {
+      "name": "canyonlands",
+      "zoom": 13,
+      "coordinates": [-109.885520,38.191011]
+    }
+  },
+  {
+    "name": "dinosaur-st-helens",
+    "humanName": "Dinosaur National Monument and Mt. St. Helens",
+    "mask": "./static/fonts/c.jpg",
+    "outerTerrain": {
+      "name": "dinosaur",
+      "zoom": 13,
+      "coordinates": [-108.941662,40.492497]
+    },
+    "innerTerrain": {
+      "name": "st-helens",
+      "zoom": 13,
+      "coordinates": [-122.185,46.20]
+    }
+  },
+  {
+    "name": "glacier-death-valley",
+    "humanName": "Glacier & Death Valley National Parks",
+    "mask": "./static/fonts/k.jpg",
+    "outerTerrain": {
+      "name": "glacier",
+      "zoom": 13,
+      "coordinates": [-113.819792,48.865910]
+    },
+    "innerTerrain": {
+      "name": "death-valley",
+      "zoom": 13,
+      "coordinates": [-117.239287,36.566628]
+    }
+  },
+  {
+    "name": "joshua-tree-north-cascades",
+    "humanName": "Joshua Tree and North Cascades National Parks",
+    "mask": "./static/fonts/m.jpg",
+    "innerTerrain": {
+      "name": "joshua-tree",
+      "zoom": 13,
+      "coordinates": [-115.900543,33.846075]
+    },
+    "outerTerrain": {
+      "name": "north-cascades",
+      "zoom": 13,
+      "coordinates": [-121.063202,48.468017]
+    }
+  },
+  {
+    "name": "grand-canyon-sequoia",
+    "humanName": "Grand Canyon and Sequoia National Parks",
+    "mask": "./static/fonts/amp.jpg",
+    "outerTerrain": {
+      "name": "sequoia",
+      "zoom": 13,
+      "coordinates": [-118.553858,36.443823]
+    },
+    "innerTerrain": {
+      "name": "grand-canyon",
+      "zoom": 13,
+      "coordinates": [-111.979304,36.052101]
     }
   }
 ]
