@@ -1,0 +1,47 @@
+[
+  {
+    "name": "whitney-reef",
+    "mask": "./static/fonts/a.png",
+    "humanName": "Mt. Whitney & Capitol Reef",
+    "innerTerrain": {
+      "name": "mount-whitney",
+      "zoom": 13,
+      "coordinates": [-118.2923, 36.5785]
+    },
+    "outerTerrain": {
+      "name": "capitol-reef",
+      "zoom": 13,
+      "coordinates": [-111.3555,38.3270]
+    }
+  },
+  {
+    "name": "crater-whitney",
+    "humanName": "Mt. Whitney & Crater Lake",
+    "mask": "./static/fonts/q.png",
+    "innerTerrain": {
+      "name": "crater-lake",
+      "zoom": 13,
+      "coordinates": [-122.1085,42.9384]
+    },
+    "outerTerrain": {
+      "name": "mount-whitney",
+      "zoom": 13,
+      "coordinates": [-118.2923, 36.5785]
+    }
+  },
+  {
+    "name": "zion-capitol-reef",
+    "humanName": "Capitol Reef & Zion National Park",
+    "mask": "./static/fonts/a.png",
+    "innerTerrain": {
+      "name": "zion",
+      "zoom": 13,
+      "coordinates": [-113.0263, 37.2982]
+    },
+    "outerTerrain": {
+      "name": "capitol-reef",
+      "zoom": 13,
+      "coordinates": [-111.3555,38.3270]
+    }
+  }
+]
