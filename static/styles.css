@@ -110,8 +110,6 @@ body:not(.animating) .sliding-site-section:not(.showing) {
   cursor: pointer;
 }
 
-.email { word-break: break-all; }
-
 .toggle-button {
   position: absolute;
   top: .75rem;
@@ -141,16 +139,12 @@ body .toggle-button.showing {
   text-align: center;
 }
 
-.toggle-button.portfolio {
+.toggle-button.portfolio, .toggle-button.back.right  {
   right: .75rem;
 }
 
 .toggle-button.back.left {
   left: .75rem;
-}
-
-.toggle-button.back.right {
-  right: .75rem;
 }
 
 .toggle-button.right .toggle-button-text {
@@ -161,7 +155,7 @@ body .toggle-button.showing {
   margin-left: 0.8em;
 }
 
-.no-js .toggle-button { display: none; }
+.no-js .toggle-button, .no-js .requires-js { display: none; }
 
 .big-image {
   width: 100%;
@@ -238,11 +232,7 @@ body .toggle-button.showing {
   -webkit-tap-highlight-color: transparent;
   align-self: center;
   cursor: pointer;
-}
-
-.canvas.next {
-  opacity: 0;
-  z-index: -1;
+  transition: 1s opacity;
 }
 
 .canvas-control {
@@ -253,6 +243,7 @@ body .toggle-button.showing {
   font-size: 1rem;
   cursor: pointer;
   line-height: 1.3;
+  transition: 1s opacity;
 }
 
 .canvas-control-helper-text {
@@ -268,14 +259,15 @@ body .toggle-button.showing {
   margin-right: .1em;
 }
 
-.small-text {
-  font-size: .75em;
+body:not(.sketch-loaded) .canvas-control, body:not(.sketch-loaded) .canvas {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 
-.inline-block {
-  display: inline-block;
-}
+.small-text { font-size: .75em; }
 
-.margin-top {
-  margin-top: 1em;
-}
+.inline-block { display: inline-block; }
+
+.margin-top { margin-top: 1em; }
+
+.email { word-break: break-all; }

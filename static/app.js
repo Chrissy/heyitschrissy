@@ -3,13 +3,14 @@ import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneG
 import guideJson from '../script/guide.json';
 import shuffle from 'array-shuffle';
 
-const drawTerrain = ({mesh, image, elevations}) => {
+const drawTerrain = ({mesh, image, elevations}, cb) => {
   mesh.geometry.vertices.map((v, i) => Object.assign(v, {z: elevations[i] / 100}));
   mesh.geometry.verticesNeedUpdate = true;
-  
+
   new TextureLoader().load(image, (img) => {
     mesh.material.map = img;
     mesh.material.needsUpdate = true;
+    cb();
   });
 }
 
@@ -82,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const showSketch = () => {
     sketchStore[counter % guide.length].then((response) => {
-      drawTerrain({mesh, ...response});
+      drawTerrain({mesh, ...response}, () => document.body.classList.add("sketch-loaded"));
       sketchTitle.innerText = guide[counter % guide.length].humanName;
       counter++;
       if (guide[counter]) sketchStore = [...sketchStore, getSketch(guide[counter].name)];
