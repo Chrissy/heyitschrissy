@@ -5,9 +5,8 @@ My personal site
 
 I build the terrain composites in Node using PostGIS, Jimp, and the Mapbox static api. I request them on the frontend and render it with three. You can see the code at:
 
-• `static/app.js` (no frameworks, tried to keep this as simple and tidy as possible)
-
-• `builders/terrain-sketches.js` (a little sloppy but it works!)
+* `static/app.js` (no frameworks, tried to keep this as simple and tidy as possible)
+* `builders/terrain-sketches.js` (a little sloppy but it works!)
 
 Unless you have experience with PostGIS and know how to make an elevation raster db, I wouldn't try to run the builder. I want to keep everything really simple and static, so there is no foreman or environment stuff, but the front end should run if you clone the repo.
 
