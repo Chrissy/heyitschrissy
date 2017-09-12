@@ -1,7 +1,7 @@
 const path = require('path').normalize;
 
 module.exports = {
-  entry: './static/app.js',
+  entry: ['whatwg-fetch', 'babel-polyfill', './static/app.js'],
   output: {
     path: path(__dirname + '/static/dist'),
     filename: 'bundle.js'
@@ -15,7 +15,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ["es2015"],
-            plugins: ["babel-plugin-transform-object-rest-spread"]
+            plugins: ["babel-plugin-transform-object-rest-spread", "babel-plugin-transform-runtime"]
           }
         }
       }

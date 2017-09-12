@@ -40,7 +40,9 @@ const initializeMesh = (canvas) => {
   return mesh;
 }
 
-const getSketch = (name, cb) => fetch("/dist/" + name + ".json").then(r => r.json());
+const getSketch = (name, cb) => {
+  return fetch("https://s3-us-west-2.amazonaws.com/chrissy-portfolio-images/" + name + ".json").then(r => r.json());
+};
 
 const requestImageSet = ({elementId}) => {
   const el = document.getElementById(elementId);
@@ -97,7 +99,3 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleButton.addEventListener('click', () => handleToggleButtonClick(toggleButton));
   });
 });
-
-window.onunload = () => {
-  window.scrollTo(0,0);
-}
