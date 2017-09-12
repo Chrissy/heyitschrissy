@@ -48,6 +48,7 @@ body.animating {
   transform: translateX(-100vw);
   background: rgb(227, 247, 255);
   height: 100vh;
+  overflow: hidden;
 }
 
 .sliding-site-section.first .content-container { height: 100%; }
