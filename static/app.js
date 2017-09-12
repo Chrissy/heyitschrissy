@@ -32,6 +32,7 @@ const initializeMesh = (canvas) => {
   camera.position.z = 400;
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   renderer.setSize(size, size);
+  renderer.setClearColor(0xe3f7ff,0);
 
   animate()
   scene.add(mesh);
