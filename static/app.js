@@ -51,6 +51,20 @@ const requestImageSet = ({elementId}) => {
   if (potentialNextSet) requestImageSet({elementId: potentialNextSet});
 }
 
+const handleToggleButtonClick = (toggleButton) => {
+  toggleButton.getAttribute("show").split(",").forEach(t => document.getElementById(t).classList.add('showing'));
+  toggleButton.getAttribute("hide").split(",").forEach(t => document.getElementById(t).classList.remove('showing'));
+  document.body.classList.add('animating');
+
+  const transitionEnd = () => {
+    if (toggleButton.getAttribute("shouldLoadImages")) requestImageSet({elementId: "image-set-1"});
+    document.body.classList.remove('animating');
+    document.body.removeEventListener("transitionend", transitionEnd);
+  }
+
+  document.body.addEventListener("transitionend", transitionEnd);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   if (Bowser.msie) return;
   document.body.classList.remove("no-js");
@@ -78,20 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
   showSketch()
 
   if (toggleButtons) toggleButtons.forEach((toggleButton) => {
-    toggleButton.addEventListener('click', function(){
-      this.getAttribute("show").split(",").forEach(t => document.getElementById(t).classList.add('showing'));
-      this.getAttribute("hide").split(",").forEach(t => document.getElementById(t).classList.remove('showing'));
-
-      document.body.classList.add('animating');
-
-      const transitionEnd = () => {
-        if (this.getAttribute("shouldLoadImages")) requestImageSet({elementId: "image-set-1"});
-        document.body.classList.remove('animating');
-        document.body.removeEventListener("transitionend", transitionEnd);
-      }
-
-      const removeAnimating = document.body.addEventListener("transitionend", transitionEnd);
-    });
+    toggleButton.addEventListener('click', () => handleToggleButtonClick(toggleButton));
   });
 });
 
