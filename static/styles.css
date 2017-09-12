@@ -47,7 +47,10 @@ body.animating {
 .sliding-site-section.first {
   transform: translateX(-100vw);
   background: rgb(227, 247, 255);
+  height: 100vh;
 }
+
+.sliding-site-section.first .content-container { height: 100%; }
 
 .sliding-site-section.third.showing + .sliding-site-section.first {
   transform: translateX(100vw);

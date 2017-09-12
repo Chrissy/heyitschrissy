@@ -4,7 +4,7 @@ const jimp = require('jimp');
 const fetch = require('node-fetch');
 const {bounds} = require('geo-viewport');
 const pool = new Pool({host: "localhost", database: "elevations_detailed"});
-const guide = JSON.parse(fs.readFileSync("./script/guide.json"));
+const guide = JSON.parse(fs.readFileSync("./sketches.json"));
 
 const query = (query, cb) => {
   pool.query(query, (err, result) => {

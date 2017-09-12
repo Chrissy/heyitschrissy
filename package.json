@@ -1,15 +1,15 @@
 {
-  "name": "chrissy_makes_a_website",
+  "name": "chrissy-makes-a-website",
   "version": "1000.0.0",
   "engines": {
-    "node": "6.9.4"
+    "node": "8.3.0"
   },
   "scripts": {
     "start": "node server.js",
     "dev": "webpack --watch & node server.js",
-    "heroku-postbuild": "webpack --optimize-minimize && node builders/uploadBundle.js",
-    "minify_images": "node script/minify_images.js",
-    "elevations": "node script/get-elevations.js"
+    "heroku-postbuild": "webpack --optimize-minimize && node builders/upload-bundle.js",
+    "minify": "node builders/minify-images.js",
+    "elevations": "node builders/terrain-sketches.js"
   },
   "license": "ISC",
   "dependencies": {

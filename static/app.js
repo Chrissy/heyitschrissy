@@ -1,6 +1,6 @@
 import Bowser from 'bowser';
 import {WebGLRenderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh, PlaneGeometry, TextureLoader} from 'three';
-import guideJson from '../script/guide.json';
+import guideJson from '../sketches.json';
 import shuffle from 'array-shuffle';
 
 const drawTerrain = ({mesh, image, elevations}, cb) => {
